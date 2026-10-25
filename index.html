@@ -27,6 +27,13 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .section{padding:20px 15px;}
 .section-title{font-size:18px;font-weight:700;margin-bottom:15px;color:#1e3a8a;display:flex;align-items:center;gap:6px;}
 
+/* HIGHLIGHTED SPECIALITY SECTION */
+.speciality-container {display:grid;grid-template-columns:1fr;gap:12px;}
+.speciality-card {background:linear-gradient(135deg, #eff6ff, #f8fafc);border:2px solid #f59e0b;border-radius:16px;padding:16px;box-shadow:0 4px 15px rgba(245,158,11,0.15);}
+.speciality-img {width:100%;height:180px;object-fit:cover;border-radius:12px;margin-bottom:10px;}
+.speciality-title {font-size:16px;font-weight:800;color:#1e3a8a;margin-bottom:6px;}
+.speciality-desc {font-size:13px;color:#334155;line-height:1.5;}
+
 /* PROJECTS GRID */
 .projects-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .project-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
@@ -78,16 +85,25 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
 </section>
 
-<!-- ADMIN DASHBOARD PANEL -->
+<!-- ADMIN DASHBOARD PANEL (LOGIN KE BAAD DIKHEGA) -->
 <div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
     <div class="section-title" style="color:#1e3a8a;">⚙️ Owner Dashboard (Balram Nagar)</div>
     
+    <!-- Speciality Management Box -->
+    <div class="form-box" style="margin-bottom:15px;border:2px dashed #f59e0b;">
+        <h3 style="color:#b45309;">🌟 Add / Update My Speciality (Main Work)</h3>
+        <div class="form-group"><label>Speciality Title</label><input type="text" id="newSpecTitle" placeholder="e.g. Expert in Highway & Road Construction"></div>
+        <div class="form-group"><label>Speciality Description</label><textarea id="newSpecDesc" rows="2" placeholder="Write details about your specialty..."></textarea></div>
+        <div class="form-group"><label>Select Photo (Max 5MB)</label><input type="file" id="newSpecImageFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;">Publish Speciality on Top</button>
+    </div>
+
     <div class="form-box" style="margin-bottom:15px;">
         <h3>📸 Add New Project Work (Photo & Description)</h3>
         <div class="form-group"><label>Project Title</label><input type="text" id="newProjectTitle" placeholder="e.g. State Highway Road Work"></div>
         <div class="form-group"><label>Project Description / Details</label><textarea id="newProjectDesc" rows="2" placeholder="Write description about this work..."></textarea></div>
         <div class="form-group"><label>Select Work Photo (Max 5MB)</label><input type="file" id="newProjectImageFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;">Publish Work to Website</button>
+        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;">Publish Project Work</button>
     </div>
 
     <div class="form-box">
@@ -97,9 +113,17 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     </div>
 </div>
 
+<!-- HIGHLIGHTED FIRST SECTION: MY SPECIALITY / MAIN WORK -->
+<div class="section">
+    <div class="section-title">🌟 My Speciality & Core Expertise</div>
+    <div class="speciality-container" id="specialityContainer">
+        <p style="text-align:center;color:#64748b;padding:10px;">Loading speciality...</p>
+    </div>
+</div>
+
 <!-- PUBLIC PROJECTS SECTION -->
 <div class="section">
-    <div class="section-title">🌟 Completed Projects & Works</div>
+    <div class="section-title">🏗️ Completed Projects & Works</div>
     <div class="projects-grid" id="projectsContainer">
         <p style="text-align:center;color:#64748b;padding:15px;">Loading completed projects...</p>
     </div>
@@ -176,6 +200,7 @@ function handleAdminBtnClick() {
         isAdminLoggedIn = false;
         checkAdminStatus();
         showToast("Logged out successfully.");
+        loadSpeciality();
         loadProjects();
     } else {
         document.getElementById("adminLoginModal").style.display = "block";
@@ -194,9 +219,85 @@ function executeAdminLogin() {
         closeModal("adminLoginModal");
         checkAdminStatus();
         showToast("Welcome Balram Nagar ji!");
+        loadSpeciality();
         loadProjects();
     } else {
         alert("Galat Email ya Password!");
+    }
+}
+
+async function uploadSpecialityWork() {
+    const title = document.getElementById("newSpecTitle").value.trim();
+    const desc = document.getElementById("newSpecDesc").value.trim();
+    const imageFile = document.getElementById("newSpecImageFile").files[0];
+
+    if(!title || !imageFile) {
+        alert("Speciality Title aur Photo select karna zaroori hai!");
+        return;
+    }
+
+    showToast("Speciality upload ho rahi hai...");
+
+    const fileExt = imageFile.name.split('.').pop();
+    const fileName = "hbk_speciality_" + Date.now() + "." + fileExt;
+    
+    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
+
+    if(error) {
+        alert("❌ Upload Error: " + error.message);
+        return;
+    }
+
+    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+    const imageUrl = urlData.publicUrl;
+
+    await supabaseClient.from("products").delete().eq("type", "OwnerSpeciality");
+
+    const { error: dbError } = await supabaseClient.from("products").insert([{
+        name: title,
+        quantity: desc,
+        price: 0,
+        type: 'OwnerSpeciality',
+        image_url: imageUrl,
+        created_at: new Date().toISOString()
+    }]);
+
+    if(dbError) {
+        alert("❌ Database Error: " + dbError.message);
+        return;
+    }
+
+    alert("🎉 Speciality successfully published on top!");
+    document.getElementById("newSpecTitle").value = "";
+    document.getElementById("newSpecDesc").value = "";
+    document.getElementById("newSpecImageFile").value = "";
+    loadSpeciality();
+}
+
+async function loadSpeciality() {
+    const container = document.getElementById("specialityContainer");
+    const { data: specList } = await supabaseClient.from("products").select("*").eq("type", "OwnerSpeciality").limit(1);
+
+    if(!specList || specList.length === 0) {
+        container.innerHTML = "<p style='text-align:center;color:#64748b;padding:10px;'>Abhi koi specialty add nahi ki gayi hai.</p>";
+        return;
+    }
+
+    const s = specList[0];
+    container.innerHTML = `
+        <div class="speciality-card">
+            <img src="${s.image_url}" class="speciality-img" alt="${s.name}">
+            <div class="speciality-title">⭐ ${s.name}</div>
+            <div class="speciality-desc">${s.quantity || ''}</div>
+            ${isAdminLoggedIn ? `<button onclick="deleteSpeciality('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">Delete Speciality</button>` : ''}
+        </div>
+    `;
+}
+
+async function deleteSpeciality(id) {
+    if(confirm("Delete this speciality?")) {
+        await supabaseClient.from("products").delete().eq("id", id);
+        loadSpeciality();
     }
 }
 
@@ -215,11 +316,10 @@ async function uploadProjectWork() {
     const fileExt = imageFile.name.split('.').pop();
     const fileName = "hbk_project_" + Date.now() + "." + fileExt;
     
-    // Supabase Storage Upload
     const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
 
     if(error) {
-        alert("Upload Error: " + error.message); // Yeh aapko exact karan bata dega
+        alert("❌ Upload Error: " + error.message);
         return;
     }
 
@@ -236,7 +336,7 @@ async function uploadProjectWork() {
     }]);
 
     if(dbError) {
-        alert("Database Error: " + dbError.message);
+        alert("❌ Database Error: " + dbError.message);
         return;
     }
 
@@ -246,7 +346,6 @@ async function uploadProjectWork() {
     document.getElementById("newProjectImageFile").value = "";
     loadProjects();
 }
-
 
 async function uploadOwnerProfilePhoto() {
     const imageFile = document.getElementById("ownerProfileFile").files[0];
@@ -258,11 +357,14 @@ async function uploadOwnerProfilePhoto() {
 
     const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile, { upsert: true });
 
-    if(!error) {
-        const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-        document.getElementById("displayOwnerImg").src = urlData.publicUrl;
-        alert("✅ Profile photo updated!");
+    if(error) {
+        alert("❌ Upload Error: " + error.message);
+        return;
     }
+
+    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+    document.getElementById("displayOwnerImg").src = urlData.publicUrl;
+    alert("✅ Profile photo updated!");
 }
 
 async function loadProjects() {
@@ -323,6 +425,7 @@ function showToast(msg) {
 }
 
 checkAdminStatus();
+loadSpeciality();
 loadProjects();
 </script>
 </body>
