@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HBK Construction - Road & Civil Work Contractor</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;}
+body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1e3a8a,#0f172a);color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.logo-area{font-size:20px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.logo-area span{color:#f59e0b;}
+
+/* HERO BANNER */
+.hero{background:linear-gradient(rgba(15,23,42,0.8), rgba(15,23,42,0.8)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:40px 20px;text-align:center;}
+.hero h1{font-size:24px;font-weight:800;margin-bottom:10px;color:#f8fafc;}
+.hero p{font-size:13px;opacity:0.9;margin-bottom:20px;line-height:1.5;}
+.cta-btn{background:#f59e0b;color:#0f172a;border:none;padding:12px 24px;border-radius:25px;font-weight:bold;font-size:14px;cursor:pointer;box-shadow:0 4px 10px rgba(245,158,11,0.4);}
+
+/* SECTIONS */
+.section{padding:20px 15px;}
+.section-title{font-size:18px;font-weight:700;margin-bottom:15px;color:#1e3a8a;display:flex;align-items:center;gap:6px;}
+
+/* SERVICES GRID */
+.services-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
+.service-card{background:white;padding:16px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);text-align:center;border-top:4px solid #1e3a8a;}
+.service-icon{font-size:32px;margin-bottom:8px;}
+.service-title{font-size:13px;font-weight:700;color:#1e293b;}
+
+/* PROJECTS GRID */
+.projects-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.project-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+.project-img{width:100%;height:150px;object-fit:cover;}
+.project-info{padding:12px;}
+.project-title{font-size:14px;font-weight:700;color:#1e3a8a;}
+.project-desc{font-size:12px;color:#64748b;margin-top:4px;}
+
+/* INQUIRY FORM */
+.form-box{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,0.06);}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#334155;}
+.form-group input, .form-group textarea, .form-group select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;}
+.submit-btn{background:#1e3a8a;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;height:60px;background:white;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #e2e8f0;z-index:200;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#64748b;font-weight:600;cursor:pointer;background:none;border:none;}
+.nav-icon{font-size:20px;margin-bottom:2px;}
+.nav-item.active{color:#1e3a8a;}
+
+#toast{display:none;position:fixed;bottom:75px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:bold;z-index:300;}
+</style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo-area">
+        🚧 <span>HBK</span> Construction
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Road & Civil Work Contractor</h1>
+    <p>Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
+    <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
+</section>
+
+<div class="section">
+    <div class="section-title">🏗️ Our Core Services</div>
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-icon">🛣️</div>
+            <div class="service-title">Road Construction & Asphalt Paving</div>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🌉</div>
+            <div class="service-title">Bridge & Culvert Works</div>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🏗️</div>
+            <div class="service-title">Heavy Civil Engineering</div>
+        </div>
+        <div class="service-card">
+            <div class="service-icon">🚜</div>
+            <div class="service-title">Earthmoving & Site Grading</div>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">🌟 Featured Projects</div>
+    <div class="projects-grid">
+        <div class="project-card">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" class="project-img">
+            <div class="project-info">
+                <div class="project-title">State Highway Development Project</div>
+                <div class="project-desc">High-quality asphalt road construction with advanced drainage systems.</div>
+            </div>
+        </div>
+        <div class="project-card">
+            <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=600&q=80" class="project-img">
+            <div class="project-info">
+                <div class="project-title">Urban Bridge & Flyover Work</div>
+                <div class="project-desc">Robust civil engineering structure built under strict safety standards.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section" id="contactSection">
+    <div class="section-title">📞 Request a Project Quote</div>
+    <div class="form-box">
+        <div class="form-group"><label>Full Name</label><input type="text" id="clientName" placeholder="Enter your name"></div>
+        <div class="form-group"><label>Mobile Number</label><input type="tel" id="clientMobile" placeholder="Enter mobile number"></div>
+        <div class="form-group"><label>Project Type</label>
+            <select id="projectType">
+                <option value="Road Construction">Road Construction</option>
+                <option value="Bridge Work">Bridge Work</option>
+                <option value="Civil Contract">Civil Contract</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group"><label>Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
+        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry</button>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <button class="nav-item active"><span class="nav-icon">🏠</span>Home</button>
+    <button class="nav-item" onclick="scrollToSection('contactSection')"><span class="nav-icon">📋</span>Quote</button>
+    <button class="nav-item" onclick="window.location.href='tel:+919876543210'"><span class="nav-icon">📞</span>Call Us</button>
+</div>
+
+<div id="toast">Inquiry Submitted Successfully!</div>
+
+<script>
+const SUPABASE_URL = "https://zqirmlnbqftzurjzbluv.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QesFfLaf4IlgNcEJbm3WEw_tq5ISxz1"; 
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+async function submitInquiry() {
+    const name = document.getElementById("clientName").value.trim();
+    const mobile = document.getElementById("clientMobile").value.trim();
+    const type = document.getElementById("projectType").value;
+    const details = document.getElementById("projectDetails").value.trim();
+
+    if(!name || !mobile) {
+        alert("Kripya Naam aur Mobile number bharein!");
+        return;
+    }
+
+    const { error } = await supabaseClient.from("orders").insert([{
+        order_id: "HBK" + Date.now(),
+        customer_name: name,
+        mobile: mobile,
+        address: type + " - " + details,
+        total: 0,
+        status: 'New Inquiry',
+        order_date: new Date().toISOString()
+    }]);
+
+    if(error) {
+        alert("Error: " + error.message);
+    } else {
+        showToast("✅ Inquiry Submitted Successfully! We will contact you soon.");
+        document.getElementById("clientName").value = "";
+        document.getElementById("clientMobile").value = "";
+        document.getElementById("projectDetails").value = "";
+    }
+}
+
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.innerText = msg;
+    t.style.display = "block";
+    setTimeout(() => { t.style.display = "none"; }, 4000);
+}
+</script>
+</body>
+</html>
