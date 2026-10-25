@@ -85,7 +85,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
 </section>
 
-<!-- ADMIN DASHBOARD PANEL (LOGIN KE BAAD DIKHEGA) -->
+<!-- ADMIN DASHBOARD PANEL -->
 <div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
     <div class="section-title" style="color:#1e3a8a;">⚙️ Owner Dashboard (Balram Nagar)</div>
     
@@ -226,6 +226,24 @@ function executeAdminLogin() {
     }
 }
 
+// Robust File Uploader Function (Fixes 'Failed to fetch')
+async function uploadFileToSupabase(file, filePrefix) {
+    const cleanFileName = filePrefix + "_" + Date.now() + ".jpg";
+    const arrayBuffer = await file.arrayBuffer();
+    
+    const { data, error } = await supabaseClient.storage.from('products').upload(cleanFileName, arrayBuffer, {
+        contentType: file.type || 'image/jpeg',
+        upsert: true
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(cleanFileName);
+    return urlData.publicUrl;
+}
+
 async function uploadSpecialityWork() {
     const title = document.getElementById("newSpecTitle").value.trim();
     const desc = document.getElementById("newSpecDesc").value.trim();
@@ -238,40 +256,30 @@ async function uploadSpecialityWork() {
 
     showToast("Speciality upload ho rahi hai...");
 
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = "hbk_speciality_" + Date.now() + "." + fileExt;
-    
-    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
+    try {
+        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_spec");
 
-    if(error) {
-        alert("❌ Upload Error: " + error.message);
-        return;
+        await supabaseClient.from("products").delete().eq("type", "OwnerSpeciality");
+
+        const { error: dbError } = await supabaseClient.from("products").insert([{
+            name: title,
+            quantity: desc,
+            price: 0,
+            type: 'OwnerSpeciality',
+            image_url: imageUrl,
+            created_at: new Date().toISOString()
+        }]);
+
+        if(dbError) throw dbError;
+
+        alert("🎉 Speciality successfully published on top!");
+        document.getElementById("newSpecTitle").value = "";
+        document.getElementById("newSpecDesc").value = "";
+        document.getElementById("newSpecImageFile").value = "";
+        loadSpeciality();
+    } catch (err) {
+        alert("❌ Upload Error: " + err.message);
     }
-
-    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-    const imageUrl = urlData.publicUrl;
-
-    await supabaseClient.from("products").delete().eq("type", "OwnerSpeciality");
-
-    const { error: dbError } = await supabaseClient.from("products").insert([{
-        name: title,
-        quantity: desc,
-        price: 0,
-        type: 'OwnerSpeciality',
-        image_url: imageUrl,
-        created_at: new Date().toISOString()
-    }]);
-
-    if(dbError) {
-        alert("❌ Database Error: " + dbError.message);
-        return;
-    }
-
-    alert("🎉 Speciality successfully published on top!");
-    document.getElementById("newSpecTitle").value = "";
-    document.getElementById("newSpecDesc").value = "";
-    document.getElementById("newSpecImageFile").value = "";
-    loadSpeciality();
 }
 
 async function loadSpeciality() {
@@ -313,38 +321,28 @@ async function uploadProjectWork() {
 
     showToast("Photo upload ho rahi hai...");
 
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = "hbk_project_" + Date.now() + "." + fileExt;
-    
-    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
+    try {
+        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_proj");
 
-    if(error) {
-        alert("❌ Upload Error: " + error.message);
-        return;
+        const { error: dbError } = await supabaseClient.from("products").insert([{
+            name: title,
+            quantity: desc,
+            price: 0,
+            type: 'ConstructionProject',
+            image_url: imageUrl,
+            created_at: new Date().toISOString()
+        }]);
+
+        if(dbError) throw dbError;
+
+        alert("🎉 Naya Work Photo aur Description Live ho gaya!");
+        document.getElementById("newProjectTitle").value = "";
+        document.getElementById("newProjectDesc").value = "";
+        document.getElementById("newProjectImageFile").value = "";
+        loadProjects();
+    } catch (err) {
+        alert("❌ Upload Error: " + err.message);
     }
-
-    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-    const imageUrl = urlData.publicUrl;
-
-    const { error: dbError } = await supabaseClient.from("products").insert([{
-        name: title,
-        quantity: desc,
-        price: 0,
-        type: 'ConstructionProject',
-        image_url: imageUrl,
-        created_at: new Date().toISOString()
-    }]);
-
-    if(dbError) {
-        alert("❌ Database Error: " + dbError.message);
-        return;
-    }
-
-    alert("🎉 Naya Work Photo aur Description Live ho gaya!");
-    document.getElementById("newProjectTitle").value = "";
-    document.getElementById("newProjectDesc").value = "";
-    document.getElementById("newProjectImageFile").value = "";
-    loadProjects();
 }
 
 async function uploadOwnerProfilePhoto() {
@@ -352,19 +350,14 @@ async function uploadOwnerProfilePhoto() {
     if(!imageFile) { alert("Photo select karein!"); return; }
 
     showToast("Profile Photo Update ho rahi hai...");
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = "hbk_owner_profile." + fileExt;
 
-    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile, { upsert: true });
-
-    if(error) {
-        alert("❌ Upload Error: " + error.message);
-        return;
+    try {
+        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_profile");
+        document.getElementById("displayOwnerImg").src = imageUrl;
+        alert("✅ Profile photo updated!");
+    } catch (err) {
+        alert("❌ Upload Error: " + err.message);
     }
-
-    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-    document.getElementById("displayOwnerImg").src = urlData.publicUrl;
-    alert("✅ Profile photo updated!");
 }
 
 async function loadProjects() {
