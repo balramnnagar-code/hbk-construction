@@ -10,9 +10,10 @@
 body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 
 /* HEADER */
-.header{background:linear-gradient(135deg,#1e3a8a,#0f172a);color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-.logo-area{font-size:20px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.header{background:linear-gradient(135deg,#1e3a8a,#0f172a);color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;}
+.logo-area{font-size:18px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;gap:6px;}
 .logo-area span{color:#f59e0b;}
+.admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
 
 /* HERO BANNER */
 .hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
@@ -35,22 +36,27 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 /* PROJECTS GRID */
 .projects-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .project-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-.project-img{width:100%;height:150px;object-fit:cover;}
+.project-img{width:100%;height:180px;object-fit:cover;}
 .project-info{padding:12px;}
 .project-title{font-size:14px;font-weight:700;color:#1e3a8a;}
 .project-desc{font-size:12px;color:#64748b;margin-top:4px;}
 
-/* CONTACT & INQUIRY INFO */
+/* CONTACT INFO */
 .contact-info-card{background:white;padding:15px;border-radius:14px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.05);font-size:13px;color:#334155;line-height:1.6;}
 .contact-info-card b{color:#1e3a8a;}
 
-/* INQUIRY FORM */
+/* FORMS & MODALS */
 .form-box{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,0.06);}
 .form-group{margin-bottom:12px;}
 .form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#334155;}
 .form-group input, .form-group textarea, .form-group select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;}
 .submit-btn{background:#1e3a8a;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:6px;}
 .whatsapp-btn{background:#22c55e;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:8px;text-align:center;display:block;text-decoration:none;}
+.email-btn{background:#0284c7;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:8px;text-align:center;display:block;text-decoration:none;}
+
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;padding:15px;overflow:auto;}
+.modal-box{background:white;max-width:500px;margin:30px auto;padding:20px;border-radius:20px;box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+.close{float:right;font-size:24px;font-weight:bold;cursor:pointer;}
 
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;width:100%;height:60px;background:white;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #e2e8f0;z-index:200;}
@@ -58,7 +64,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .nav-icon{font-size:20px;margin-bottom:2px;}
 .nav-item.active{color:#1e3a8a;}
 
-#toast{display:none;position:fixed;bottom:75px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:bold;z-index:300;}
+#toast{display:none;position:fixed;bottom:75px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:bold;z-index:400;}
 </style>
 </head>
 <body>
@@ -67,16 +73,35 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <div class="logo-area">
         🚧 <span>HBK</span> Construction
     </div>
+    <button class="admin-login-btn" onclick="handleAdminBtnClick()" id="adminNavBtn">🔐 Admin Login</button>
 </header>
 
 <section class="hero">
-    <!-- Aapki Upload ki Hui Photo Yahan Set Hai -->
-    <img src="YOUR_IMAGE_LINK_HERE" class="owner-profile-img" alt="Balram Nagar">
+    <img id="displayOwnerImg" src="https://via.placeholder.com/90?text=Balram+Nagar" class="owner-profile-img" alt="Balram Nagar">
     <h1>Balram Nagar</h1>
     <h3>Proprietor & Contractor - HBK Construction</h3>
     <p>Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
     <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
 </section>
+
+<!-- ADMIN DASHBOARD PANEL (SIRF LOGIN KE BAAD DIKHEGA) -->
+<div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
+    <div class="section-title" style="color:#1e3a8a;">⚙️ Owner Dashboard (Balram Nagar)</div>
+    
+    <div class="form-box" style="margin-bottom:15px;">
+        <h3>📸 Add New Project Work (Photo & Description)</h3>
+        <div class="form-group"><label>Project Title</label><input type="text" id="newProjectTitle" placeholder="e.g. State Highway Road Work"></div>
+        <div class="form-group"><label>Project Description / Details</label><textarea id="newProjectDesc" rows="2" placeholder="Write description about this work..."></textarea></div>
+        <div class="form-group"><label>Select Work Photo (Max 5MB)</label><input type="file" id="newProjectImageFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;">Publish Work to Website</button>
+    </div>
+
+    <div class="form-box">
+        <h3>👤 Update Profile Photo</h3>
+        <div class="form-group"><label>Select Profile Photo</label><input type="file" id="ownerProfileFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadOwnerProfilePhoto()" style="background:#ca8a04;">Update Profile Photo</button>
+    </div>
+</div>
 
 <div class="section">
     <div class="section-title">🏗️ Our Core Services</div>
@@ -100,23 +125,11 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     </div>
 </div>
 
+<!-- PUBLIC PROJECTS SECTION (Bina Login ke sabko dikhega) -->
 <div class="section">
-    <div class="section-title">🌟 Featured Projects</div>
-    <div class="projects-grid">
-        <div class="project-card">
-            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=600&q=80" class="project-img">
-            <div class="project-info">
-                <div class="project-title">State Highway Development Project</div>
-                <div class="project-desc">High-quality asphalt road construction with advanced drainage systems.</div>
-            </div>
-        </div>
-        <div class="project-card">
-            <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=600&q=80" class="project-img">
-            <div class="project-info">
-                <div class="project-title">Urban Bridge & Flyover Work</div>
-                <div class="project-desc">Robust civil engineering structure built under strict safety standards.</div>
-            </div>
-        </div>
+    <div class="section-title">🌟 Completed Projects & Works</div>
+    <div class="projects-grid" id="projectsContainer">
+        <p style="text-align:center;color:#64748b;padding:15px;">Loading completed projects...</p>
     </div>
 </div>
 
@@ -142,15 +155,27 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
             </select>
         </div>
         <div class="form-group"><label>Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
-        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry to Database</button>
-        <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn">💬 Chat on WhatsApp (+91 6260832599)</a>
+        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry (Bina Login ke)</button>
+        <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn">💬 Direct WhatsApp Chat (+91 6260832599)</a>
+        <a id="emailDirectBtn" href="#" class="email-btn">📧 Send Direct Email</a>
     </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="modal" id="adminLoginModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeModal('adminLoginModal')">×</span>
+    <h2 style="color:#1e3a8a;margin-bottom:12px;">🔐 Owner Login (Balram Nagar)</h2>
+    <div class="form-group"><label>Email Address</label><input type="email" id="adminEmail" placeholder="balramnnagar0077@gmail.com"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="adminPassword" placeholder="Enter password"></div>
+    <button class="submit-btn" onclick="executeAdminLogin()">Login</button>
+  </div>
 </div>
 
 <div class="bottom-nav">
     <button class="nav-item active" onclick="scrollToSection('contactSection')"><span class="nav-icon">🏠</span>Home</button>
     <button class="nav-item" onclick="scrollToSection('contactSection')"><span class="nav-icon">📋</span>Quote</button>
-    <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span>Call Us</a>
+    <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span>Call</a>
 </div>
 
 <div id="toast">Inquiry Submitted Successfully!</div>
@@ -160,9 +185,137 @@ const SUPABASE_URL = "https://zqirmlnbqftzurjzbluv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QesFfLaf4IlgNcEJbm3WEw_tq5ISxz1"; 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-function scrollToSection(id) {
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+const ADMIN_EMAIL = "balramnnagar0077@gmail.com";
+let isAdminLoggedIn = localStorage.getItem("hbk_admin_logged") === "true";
+
+function checkAdminStatus() {
+    if(isAdminLoggedIn) {
+        document.getElementById("adminPanelSection").style.display = "block";
+        document.getElementById("adminNavBtn").innerText = "🚪 Logout";
+    } else {
+        document.getElementById("adminPanelSection").style.display = "none";
+        document.getElementById("adminNavBtn").innerText = "🔐 Admin Login";
+    }
 }
+
+function handleAdminBtnClick() {
+    if(isAdminLoggedIn) {
+        localStorage.removeItem("hbk_admin_logged");
+        isAdminLoggedIn = false;
+        checkAdminStatus();
+        showToast("Logged out successfully.");
+        loadProjects();
+    } else {
+        document.getElementById("adminLoginModal").style.display = "block";
+    }
+}
+
+function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+function executeAdminLogin() {
+    const email = document.getElementById("adminEmail").value.trim();
+    const pass = document.getElementById("adminPassword").value.trim();
+
+    if(email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && (pass === "admin123" || pass === "Balram@70245872")) {
+        localStorage.setItem("hbk_admin_logged", "true");
+        isAdminLoggedIn = true;
+        closeModal("adminLoginModal");
+        checkAdminStatus();
+        showToast("Welcome Balram Nagar ji!");
+        loadProjects();
+    } else {
+        alert("Galat Email ya Password!");
+    }
+}
+
+async function uploadProjectWork() {
+    const title = document.getElementById("newProjectTitle").value.trim();
+    const desc = document.getElementById("newProjectDesc").value.trim();
+    const imageFile = document.getElementById("newProjectImageFile").files[0];
+
+    if(!title || !imageFile) {
+        alert("Title aur Work Photo select karna zaroori hai!");
+        return;
+    }
+
+    showToast("Photo upload ho rahi hai...");
+
+    const fileExt = imageFile.name.split('.').pop();
+    const fileName = "hbk_project_" + Date.now() + "." + fileExt;
+    
+    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
+
+    let imageUrl = "";
+    if(!error) {
+        const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+        imageUrl = urlData.publicUrl;
+    } else {
+        alert("Upload error: " + error.message);
+        return;
+    }
+
+    await supabaseClient.from("products").insert([{
+        name: title,
+        quantity: desc,
+        price: 0,
+        type: 'ConstructionProject',
+        image_url: imageUrl,
+        created_at: new Date().toISOString()
+    }]);
+
+    alert("🎉 Naya Work Photo aur Description Live ho gaya!");
+    document.getElementById("newProjectTitle").value = "";
+    document.getElementById("newProjectDesc").value = "";
+    document.getElementById("newProjectImageFile").value = "";
+    loadProjects();
+}
+
+async function uploadOwnerProfilePhoto() {
+    const imageFile = document.getElementById("ownerProfileFile").files[0];
+    if(!imageFile) { alert("Photo select karein!"); return; }
+
+    showToast("Profile Photo Update ho rahi hai...");
+    const fileExt = imageFile.name.split('.').pop();
+    const fileName = "hbk_owner_profile." + fileExt;
+
+    const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile, { upsert: true });
+
+    if(!error) {
+        const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+        document.getElementById("displayOwnerImg").src = urlData.publicUrl;
+        alert("✅ Profile photo updated!");
+    }
+}
+
+async function loadProjects() {
+    const container = document.getElementById("projectsContainer");
+    const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "ConstructionProject").order("created_at", { ascending: false });
+
+    if(!projects || projects.length === 0) {
+        container.innerHTML = "<p style='text-align:center;color:#64748b;padding:15px;'>Abhi koi project work add nahi hua hai.</p>";
+        return;
+    }
+
+    container.innerHTML = projects.map(p => `
+        <div class="project-card">
+            <img src="${p.image_url}" class="project-img" alt="${p.name}">
+            <div class="project-info">
+                <div class="project-title">${p.name}</div>
+                <div class="project-desc">${p.quantity || ''}</div>
+                ${isAdminLoggedIn ? `<button onclick="deleteProject('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">Delete Work</button>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function deleteProject(id) {
+    if(confirm("Delete this project work?")) {
+        await supabaseClient.from("products").delete().eq("id", id);
+        loadProjects();
+    }
+}
+
+function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
 
 async function submitInquiry() {
     const name = document.getElementById("clientName").value.trim();
@@ -170,38 +323,20 @@ async function submitInquiry() {
     const type = document.getElementById("projectType").value;
     const details = document.getElementById("projectDetails").value.trim();
 
-    if(!name || !mobile) {
-        alert("Kripya Naam aur Mobile number bharein!");
-        return;
-    }
+    if(!name || !mobile) { alert("Kripya Naam aur Mobile number bharein!"); return; }
 
-    const { error } = await supabaseClient.from("orders").insert([{
-        order_id: "HBK" + Date.now(),
-        customer_name: name,
-        mobile: mobile,
-        address: type + " - " + details,
-        total: 0,
-        status: 'New Inquiry (Balram Nagar)',
-        order_date: new Date().toISOString()
+    await supabaseClient.from("orders").insert([{
+        order_id: "HBK" + Date.now(), customer_name: name, mobile: mobile, address: type + " - " + details, total: 0, status: 'New Inquiry (Balram Nagar)', order_date: new Date().toISOString()
     }]);
 
-    if(error) {
-        alert("Error: " + error.message);
-    } else {
-        showToast("✅ Inquiry Submitted Successfully!");
-        
-        // Auto WhatsApp Redirect
-        const waText = encodeURIComponent("Hello Balram Nagar ji, I want an inquiry for " + type + ". My name is " + name + ". Details: " + details);
-        window.open("https://api.whatsapp.com/send?phone=916260832599&text=" + waText, "_blank");
-
-        document.getElementById("clientName").value = "";
-        document.getElementById("clientMobile").value = "";
-        document.getElementById("projectDetails").value = "";
-    }
+    showToast("✅ Inquiry Submitted Successfully!");
+    const waText = encodeURIComponent("Hello Balram Nagar ji, I want an inquiry for " + type + ". My name is " + name + ". Details: " + details);
+    window.open("https://api.whatsapp.com/send?phone=916260832599&text=" + waText, "_blank");
 }
 
-// Setup WhatsApp Direct Link
+// Direct Links Setup
 document.getElementById("whatsappDirectBtn").href = "https://api.whatsapp.com/send?phone=916260832599&text=" + encodeURIComponent("Hello Balram Nagar ji, I want to discuss a construction project.");
+document.getElementById("emailDirectBtn").href = "mailto:balramnnagar0077@gmail.com?subject=Construction%20Project%20Inquiry&body=Hello%20Balram%20Nagar%20ji,";
 
 function showToast(msg) {
     const t = document.getElementById("toast");
@@ -209,6 +344,9 @@ function showToast(msg) {
     t.style.display = "block";
     setTimeout(() => { t.style.display = "none"; }, 4000);
 }
+
+checkAdminStatus();
+loadProjects();
 </script>
 </body>
 </html>
