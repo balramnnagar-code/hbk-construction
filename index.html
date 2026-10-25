@@ -215,18 +215,18 @@ async function uploadProjectWork() {
     const fileExt = imageFile.name.split('.').pop();
     const fileName = "hbk_project_" + Date.now() + "." + fileExt;
     
+    // Supabase Storage Upload
     const { data, error } = await supabaseClient.storage.from('products').upload(fileName, imageFile);
 
-    let imageUrl = "";
-    if(!error) {
-        const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
-        imageUrl = urlData.publicUrl;
-    } else {
-        alert("Upload error: " + error.message);
+    if(error) {
+        alert("Upload Error: " + error.message); // Yeh aapko exact karan bata dega
         return;
     }
 
-    await supabaseClient.from("products").insert([{
+    const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(fileName);
+    const imageUrl = urlData.publicUrl;
+
+    const { error: dbError } = await supabaseClient.from("products").insert([{
         name: title,
         quantity: desc,
         price: 0,
@@ -235,12 +235,18 @@ async function uploadProjectWork() {
         created_at: new Date().toISOString()
     }]);
 
+    if(dbError) {
+        alert("Database Error: " + dbError.message);
+        return;
+    }
+
     alert("🎉 Naya Work Photo aur Description Live ho gaya!");
     document.getElementById("newProjectTitle").value = "";
     document.getElementById("newProjectDesc").value = "";
     document.getElementById("newProjectImageFile").value = "";
     loadProjects();
 }
+
 
 async function uploadOwnerProfilePhoto() {
     const imageFile = document.getElementById("ownerProfileFile").files[0];
