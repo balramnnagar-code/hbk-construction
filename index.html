@@ -226,20 +226,25 @@ function executeAdminLogin() {
     }
 }
 
-// Robust File Uploader Function (Fixes 'Failed to fetch')
+// Debug Uploader with Alerts at every checkpoint
 async function uploadFileToSupabase(file, filePrefix) {
+    alert("Checkpoint A: File upload function shuru hua");
     const cleanFileName = filePrefix + "_" + Date.now() + ".jpg";
+    
+    alert("Checkpoint B: ArrayBuffer ban raha hai...");
     const arrayBuffer = await file.arrayBuffer();
     
+    alert("Checkpoint C: Supabase storage se upload request ja rahi hai...");
     const { data, error } = await supabaseClient.storage.from('products').upload(cleanFileName, arrayBuffer, {
         contentType: file.type || 'image/jpeg',
         upsert: true
     });
 
     if (error) {
-        throw new Error(error.message);
+        throw new Error("Supabase Storage: " + error.message);
     }
 
+    alert("Checkpoint D: Public URL nikal raha hai...");
     const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(cleanFileName);
     return urlData.publicUrl;
 }
@@ -247,18 +252,17 @@ async function uploadFileToSupabase(file, filePrefix) {
 async function uploadSpecialityWork() {
     const title = document.getElementById("newSpecTitle").value.trim();
     const desc = document.getElementById("newSpecDesc").value.trim();
-    const imageFile = document.getElementById("newSpecImageFile").files[0];
+    const imageInput = document.getElementById("newSpecImageFile");
 
-    if(!title || !imageFile) {
-        alert("Speciality Title aur Photo select karna zaroori hai!");
+    if(!title || imageInput.files.length === 0) {
+        alert("❌ Kripya Speciality Title aur Photo dono select karein!");
         return;
     }
 
-    showToast("Speciality upload ho rahi hai...");
-
     try {
-        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_spec");
+        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_spec");
 
+        alert("Checkpoint E: Database mein Speciality save ho rahi hai...");
         await supabaseClient.from("products").delete().eq("type", "OwnerSpeciality");
 
         const { error: dbError } = await supabaseClient.from("products").insert([{
@@ -270,15 +274,15 @@ async function uploadSpecialityWork() {
             created_at: new Date().toISOString()
         }]);
 
-        if(dbError) throw dbError;
+        if(dbError) throw new Error("Database: " + dbError.message);
 
         alert("🎉 Speciality successfully published on top!");
         document.getElementById("newSpecTitle").value = "";
         document.getElementById("newSpecDesc").value = "";
-        document.getElementById("newSpecImageFile").value = "";
+        imageInput.value = "";
         loadSpeciality();
     } catch (err) {
-        alert("❌ Upload Error: " + err.message);
+        alert("❌ Error caught: " + err.message);
     }
 }
 
@@ -312,17 +316,15 @@ async function deleteSpeciality(id) {
 async function uploadProjectWork() {
     const title = document.getElementById("newProjectTitle").value.trim();
     const desc = document.getElementById("newProjectDesc").value.trim();
-    const imageFile = document.getElementById("newProjectImageFile").files[0];
+    const imageInput = document.getElementById("newProjectImageFile");
 
-    if(!title || !imageFile) {
-        alert("Title aur Work Photo select karna zaroori hai!");
+    if(!title || imageInput.files.length === 0) {
+        alert("❌ Kripya Project Title aur Work Photo select karein!");
         return;
     }
 
-    showToast("Photo upload ho rahi hai...");
-
     try {
-        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_proj");
+        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_proj");
 
         const { error: dbError } = await supabaseClient.from("products").insert([{
             name: title,
@@ -333,30 +335,31 @@ async function uploadProjectWork() {
             created_at: new Date().toISOString()
         }]);
 
-        if(dbError) throw dbError;
+        if(dbError) throw new Error("Database: " + dbError.message);
 
         alert("🎉 Naya Work Photo aur Description Live ho gaya!");
         document.getElementById("newProjectTitle").value = "";
         document.getElementById("newProjectDesc").value = "";
-        document.getElementById("newProjectImageFile").value = "";
+        imageInput.value = "";
         loadProjects();
     } catch (err) {
-        alert("❌ Upload Error: " + err.message);
+        alert("❌ Error caught: " + err.message);
     }
 }
 
 async function uploadOwnerProfilePhoto() {
-    const imageFile = document.getElementById("ownerProfileFile").files[0];
-    if(!imageFile) { alert("Photo select karein!"); return; }
-
-    showToast("Profile Photo Update ho rahi hai...");
+    const imageInput = document.getElementById("ownerProfileFile");
+    if(imageInput.files.length === 0) { 
+        alert("❌ Kripya Profile Photo select karein!"); 
+        return; 
+    }
 
     try {
-        const imageUrl = await uploadFileToSupabase(imageFile, "hbk_profile");
+        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
         document.getElementById("displayOwnerImg").src = imageUrl;
-        alert("✅ Profile photo updated!");
+        alert("✅ Profile photo updated successfully!");
     } catch (err) {
-        alert("❌ Upload Error: " + err.message);
+        alert("❌ Error caught: " + err.message);
     }
 }
 
