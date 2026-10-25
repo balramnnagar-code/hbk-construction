@@ -202,6 +202,7 @@ function handleAdminBtnClick() {
         showToast("Logged out successfully.");
         loadSpeciality();
         loadProjects();
+        loadOwnerProfile();
     } else {
         document.getElementById("adminLoginModal").style.display = "block";
     }
@@ -221,32 +222,70 @@ function executeAdminLogin() {
         showToast("Welcome Balram Nagar ji!");
         loadSpeciality();
         loadProjects();
+        loadOwnerProfile();
     } else {
         alert("Galat Email ya Password!");
     }
 }
 
-// Debug Uploader with Alerts at every checkpoint
+// Robust File Uploader Function
 async function uploadFileToSupabase(file, filePrefix) {
-    alert("Checkpoint A: File upload function shuru hua");
     const cleanFileName = filePrefix + "_" + Date.now() + ".jpg";
-    
-    alert("Checkpoint B: ArrayBuffer ban raha hai...");
     const arrayBuffer = await file.arrayBuffer();
     
-    alert("Checkpoint C: Supabase storage se upload request ja rahi hai...");
     const { data, error } = await supabaseClient.storage.from('products').upload(cleanFileName, arrayBuffer, {
         contentType: file.type || 'image/jpeg',
         upsert: true
     });
 
     if (error) {
-        throw new Error("Supabase Storage: " + error.message);
+        throw new Error(error.message);
     }
 
-    alert("Checkpoint D: Public URL nikal raha hai...");
     const { data: urlData } = supabaseClient.storage.from('products').getPublicUrl(cleanFileName);
     return urlData.publicUrl;
+}
+
+// Load Profile Photo on Page Open
+async function loadOwnerProfile() {
+    const { data: profileList } = await supabaseClient.from("products").select("*").eq("type", "OwnerProfile").limit(1);
+    if(profileList && profileList.length > 0) {
+        document.getElementById("displayOwnerImg").src = profileList[0].image_url;
+    }
+}
+
+async function uploadOwnerProfilePhoto() {
+    const imageInput = document.getElementById("ownerProfileFile");
+    if(imageInput.files.length === 0) { 
+        alert("❌ Kripya Profile Photo select karein!"); 
+        return; 
+    }
+
+    showToast("Profile Photo Update ho rahi hai...");
+
+    try {
+        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
+
+        // Save profile photo URL in database
+        await supabaseClient.from("products").delete().eq("type", "OwnerProfile");
+
+        const { error: dbError } = await supabaseClient.from("products").insert([{
+            name: "Owner Profile",
+            quantity: "Profile Picture",
+            price: 0,
+            type: 'OwnerProfile',
+            image_url: imageUrl,
+            created_at: new Date().toISOString()
+        }]);
+
+        if(dbError) throw dbError;
+
+        document.getElementById("displayOwnerImg").src = imageUrl;
+        alert("✅ Profile photo updated and saved successfully!");
+        imageInput.value = "";
+    } catch (err) {
+        alert("❌ Error caught: " + err.message);
+    }
 }
 
 async function uploadSpecialityWork() {
@@ -259,10 +298,11 @@ async function uploadSpecialityWork() {
         return;
     }
 
+    showToast("Speciality upload ho rahi hai...");
+
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_spec");
 
-        alert("Checkpoint E: Database mein Speciality save ho rahi hai...");
         await supabaseClient.from("products").delete().eq("type", "OwnerSpeciality");
 
         const { error: dbError } = await supabaseClient.from("products").insert([{
@@ -274,7 +314,7 @@ async function uploadSpecialityWork() {
             created_at: new Date().toISOString()
         }]);
 
-        if(dbError) throw new Error("Database: " + dbError.message);
+        if(dbError) throw dbError;
 
         alert("🎉 Speciality successfully published on top!");
         document.getElementById("newSpecTitle").value = "";
@@ -323,6 +363,8 @@ async function uploadProjectWork() {
         return;
     }
 
+    showToast("Photo upload ho rahi hai...");
+
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_proj");
 
@@ -335,29 +377,13 @@ async function uploadProjectWork() {
             created_at: new Date().toISOString()
         }]);
 
-        if(dbError) throw new Error("Database: " + dbError.message);
+        if(dbError) throw dbError;
 
         alert("🎉 Naya Work Photo aur Description Live ho gaya!");
         document.getElementById("newProjectTitle").value = "";
         document.getElementById("newProjectDesc").value = "";
         imageInput.value = "";
         loadProjects();
-    } catch (err) {
-        alert("❌ Error caught: " + err.message);
-    }
-}
-
-async function uploadOwnerProfilePhoto() {
-    const imageInput = document.getElementById("ownerProfileFile");
-    if(imageInput.files.length === 0) { 
-        alert("❌ Kripya Profile Photo select karein!"); 
-        return; 
-    }
-
-    try {
-        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
-        document.getElementById("displayOwnerImg").src = imageUrl;
-        alert("✅ Profile photo updated successfully!");
     } catch (err) {
         alert("❌ Error caught: " + err.message);
     }
@@ -421,6 +447,7 @@ function showToast(msg) {
 }
 
 checkAdminStatus();
+loadOwnerProfile();
 loadSpeciality();
 loadProjects();
 </script>
