@@ -15,10 +15,12 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .logo-area span{color:#f59e0b;}
 
 /* HERO BANNER */
-.hero{background:linear-gradient(rgba(15,23,42,0.8), rgba(15,23,42,0.8)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:40px 20px;text-align:center;}
-.hero h1{font-size:24px;font-weight:800;margin-bottom:10px;color:#f8fafc;}
-.hero p{font-size:13px;opacity:0.9;margin-bottom:20px;line-height:1.5;}
-.cta-btn{background:#f59e0b;color:#0f172a;border:none;padding:12px 24px;border-radius:25px;font-weight:bold;font-size:14px;cursor:pointer;box-shadow:0 4px 10px rgba(245,158,11,0.4);}
+.hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
+.owner-profile-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #f59e0b;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+.hero h1{font-size:22px;font-weight:800;margin-bottom:4px;color:#f8fafc;}
+.hero h3{font-size:14px;color:#f59e0b;margin-bottom:8px;font-weight:600;}
+.hero p{font-size:12px;opacity:0.9;margin-bottom:15px;line-height:1.4;}
+.cta-btn{background:#f59e0b;color:#0f172a;border:none;padding:10px 20px;border-radius:25px;font-weight:bold;font-size:13px;cursor:pointer;box-shadow:0 4px 10px rgba(245,158,11,0.4);}
 
 /* SECTIONS */
 .section{padding:20px 15px;}
@@ -38,16 +40,21 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .project-title{font-size:14px;font-weight:700;color:#1e3a8a;}
 .project-desc{font-size:12px;color:#64748b;margin-top:4px;}
 
+/* CONTACT & INQUIRY INFO */
+.contact-info-card{background:white;padding:15px;border-radius:14px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.05);font-size:13px;color:#334155;line-height:1.6;}
+.contact-info-card b{color:#1e3a8a;}
+
 /* INQUIRY FORM */
 .form-box{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,0.06);}
 .form-group{margin-bottom:12px;}
 .form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#334155;}
 .form-group input, .form-group textarea, .form-group select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;}
-.submit-btn{background:#1e3a8a;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;}
+.submit-btn{background:#1e3a8a;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:6px;}
+.whatsapp-btn{background:#22c55e;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:8px;text-align:center;display:block;text-decoration:none;}
 
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;width:100%;height:60px;background:white;display:flex;justify-content:space-around;align-items:center;border-top:1px solid #e2e8f0;z-index:200;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#64748b;font-weight:600;cursor:pointer;background:none;border:none;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#64748b;font-weight:600;cursor:pointer;background:none;border:none;text-decoration:none;}
 .nav-icon{font-size:20px;margin-bottom:2px;}
 .nav-item.active{color:#1e3a8a;}
 
@@ -63,7 +70,10 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 </header>
 
 <section class="hero">
-    <h1>Road & Civil Work Contractor</h1>
+    <!-- Aapki Upload ki Hui Photo Yahan Set Hai -->
+    <img src="YOUR_IMAGE_LINK_HERE" class="owner-profile-img" alt="Balram Nagar">
+    <h1>Balram Nagar</h1>
+    <h3>Proprietor & Contractor - HBK Construction</h3>
     <p>Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
     <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
 </section>
@@ -111,7 +121,15 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 </div>
 
 <div class="section" id="contactSection">
-    <div class="section-title">📞 Request a Project Quote</div>
+    <div class="section-title">📞 Direct Contact & Quotation</div>
+    
+    <div class="contact-info-card">
+        👤 <b>Owner:</b> Balram Nagar<br>
+        📞 <b>Mobile:</b> +91 6260832599<br>
+        📧 <b>Email:</b> balramnnagar0077@gmail.com<br>
+        📍 <b>Work Area:</b> Road & Civil Construction Contractor
+    </div>
+
     <div class="form-box">
         <div class="form-group"><label>Full Name</label><input type="text" id="clientName" placeholder="Enter your name"></div>
         <div class="form-group"><label>Mobile Number</label><input type="tel" id="clientMobile" placeholder="Enter mobile number"></div>
@@ -124,14 +142,15 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
             </select>
         </div>
         <div class="form-group"><label>Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
-        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry</button>
+        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry to Database</button>
+        <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn">💬 Chat on WhatsApp (+91 6260832599)</a>
     </div>
 </div>
 
 <div class="bottom-nav">
-    <button class="nav-item active"><span class="nav-icon">🏠</span>Home</button>
+    <button class="nav-item active" onclick="scrollToSection('contactSection')"><span class="nav-icon">🏠</span>Home</button>
     <button class="nav-item" onclick="scrollToSection('contactSection')"><span class="nav-icon">📋</span>Quote</button>
-    <button class="nav-item" onclick="window.location.href='tel:+919876543210'"><span class="nav-icon">📞</span>Call Us</button>
+    <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span>Call Us</a>
 </div>
 
 <div id="toast">Inquiry Submitted Successfully!</div>
@@ -162,19 +181,27 @@ async function submitInquiry() {
         mobile: mobile,
         address: type + " - " + details,
         total: 0,
-        status: 'New Inquiry',
+        status: 'New Inquiry (Balram Nagar)',
         order_date: new Date().toISOString()
     }]);
 
     if(error) {
         alert("Error: " + error.message);
     } else {
-        showToast("✅ Inquiry Submitted Successfully! We will contact you soon.");
+        showToast("✅ Inquiry Submitted Successfully!");
+        
+        // Auto WhatsApp Redirect
+        const waText = encodeURIComponent("Hello Balram Nagar ji, I want an inquiry for " + type + ". My name is " + name + ". Details: " + details);
+        window.open("https://api.whatsapp.com/send?phone=916260832599&text=" + waText, "_blank");
+
         document.getElementById("clientName").value = "";
         document.getElementById("clientMobile").value = "";
         document.getElementById("projectDetails").value = "";
     }
 }
+
+// Setup WhatsApp Direct Link
+document.getElementById("whatsappDirectBtn").href = "https://api.whatsapp.com/send?phone=916260832599&text=" + encodeURIComponent("Hello Balram Nagar ji, I want to discuss a construction project.");
 
 function showToast(msg) {
     const t = document.getElementById("toast");
