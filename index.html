@@ -27,12 +27,6 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .section{padding:20px 15px;}
 .section-title{font-size:18px;font-weight:700;margin-bottom:15px;color:#1e3a8a;display:flex;align-items:center;gap:6px;}
 
-/* SERVICES GRID */
-.services-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
-.service-card{background:white;padding:16px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);text-align:center;border-top:4px solid #1e3a8a;}
-.service-icon{font-size:32px;margin-bottom:8px;}
-.service-title{font-size:13px;font-weight:700;color:#1e293b;}
-
 /* PROJECTS GRID */
 .projects-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .project-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
@@ -84,7 +78,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
 </section>
 
-<!-- ADMIN DASHBOARD PANEL (SIRF LOGIN KE BAAD DIKHEGA) -->
+<!-- ADMIN DASHBOARD PANEL -->
 <div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
     <div class="section-title" style="color:#1e3a8a;">⚙️ Owner Dashboard (Balram Nagar)</div>
     
@@ -103,29 +97,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     </div>
 </div>
 
-<div class="section">
-    <div class="section-title">🏗️ Our Core Services</div>
-    <div class="services-grid">
-        <div class="service-card">
-            <div class="service-icon">🛣️</div>
-            <div class="service-title">Road Construction & Asphalt Paving</div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🌉</div>
-            <div class="service-title">Bridge & Culvert Works</div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🏗️</div>
-            <div class="service-title">Heavy Civil Engineering</div>
-        </div>
-        <div class="service-card">
-            <div class="service-icon">🚜</div>
-            <div class="service-title">Earthmoving & Site Grading</div>
-        </div>
-    </div>
-</div>
-
-<!-- PUBLIC PROJECTS SECTION (Bina Login ke sabko dikhega) -->
+<!-- PUBLIC PROJECTS SECTION -->
 <div class="section">
     <div class="section-title">🌟 Completed Projects & Works</div>
     <div class="projects-grid" id="projectsContainer">
@@ -155,7 +127,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
             </select>
         </div>
         <div class="form-group"><label>Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
-        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry (Bina Login ke)</button>
+        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry</button>
         <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn">💬 Direct WhatsApp Chat (+91 6260832599)</a>
         <a id="emailDirectBtn" href="#" class="email-btn">📧 Send Direct Email</a>
     </div>
@@ -334,7 +306,6 @@ async function submitInquiry() {
     window.open("https://api.whatsapp.com/send?phone=916260832599&text=" + waText, "_blank");
 }
 
-// Direct Links Setup
 document.getElementById("whatsappDirectBtn").href = "https://api.whatsapp.com/send?phone=916260832599&text=" + encodeURIComponent("Hello Balram Nagar ji, I want to discuss a construction project.");
 document.getElementById("emailDirectBtn").href = "mailto:balramnnagar0077@gmail.com?subject=Construction%20Project%20Inquiry&body=Hello%20Balram%20Nagar%20ji,";
 
