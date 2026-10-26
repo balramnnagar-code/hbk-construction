@@ -103,12 +103,22 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
         <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;" data-i18n="publishSpecBtn">Publish Speciality on Top</button>
     </div>
 
+    <!-- Ongoing Projects Management Box -->
+    <div class="form-box" style="margin-bottom:15px;border:2px dashed #0284c7;">
+        <h3 style="color:#0369a1;" data-i18n="addOngoingTitle">🚧 Add Ongoing Project (Current Work)</h3>
+        <div class="form-group"><label data-i18n="ongoingTitleLabel">Project Title</label><input type="text" id="newOngoingTitle" placeholder="e.g. National Highway PQC Work"></div>
+        <div class="form-group"><label data-i18n="ongoingDescLabel">Project Description / Details</label><textarea id="newOngoingDesc" rows="2" placeholder="Write ongoing project details..."></textarea></div>
+        <div class="form-group"><label data-i18n="ongoingPhotoLabel">Select Work Photo (Max 5MB)</label><input type="file" id="newOngoingImageFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadOngoingWork()" style="background:#0284c7;color:white;" data-i18n="publishOngoingBtn">Publish Ongoing Project</button>
+    </div>
+
+    <!-- Completed Projects Management Box -->
     <div class="form-box" style="margin-bottom:15px;">
-        <h3 data-i18n="addProjTitle">📸 Add New Project Work (Photo & Description)</h3>
+        <h3 data-i18n="addProjTitle">📸 Add Completed Project Work (Photo & Description)</h3>
         <div class="form-group"><label data-i18n="projTitleLabel">Project Title</label><input type="text" id="newProjectTitle" placeholder="e.g. State Highway Road Work"></div>
         <div class="form-group"><label data-i18n="projDescLabel">Project Description / Details</label><textarea id="newProjectDesc" rows="2" placeholder="Write description about this work..."></textarea></div>
         <div class="form-group"><label data-i18n="projPhotoLabel">Select Work Photo (Max 5MB)</label><input type="file" id="newProjectImageFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;" data-i18n="publishProjBtn">Publish Project Work</button>
+        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;" data-i18n="publishProjBtn">Publish Completed Project</button>
     </div>
 
     <div class="form-box">
@@ -126,7 +136,15 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     </div>
 </div>
 
-<!-- PUBLIC PROJECTS SECTION -->
+<!-- ONGOING PROJECTS SECTION -->
+<div class="section">
+    <div class="section-title" data-i18n="ongoingSectionTitle">🚧 Ongoing Projects & Works</div>
+    <div class="projects-grid" id="ongoingContainer">
+        <p style="text-align:center;color:#64748b;padding:15px;">Loading ongoing projects...</p>
+    </div>
+</div>
+
+<!-- PUBLIC COMPLETED PROJECTS SECTION -->
 <div class="section">
     <div class="section-title" data-i18n="projSectionTitle">🏗️ Completed Projects & Works</div>
     <div class="projects-grid" id="projectsContainer">
@@ -196,24 +214,30 @@ const translations = {
     en: {
         adminLogin: "🔐 Admin Login",
         logout: "🚪 Logout",
-        ownerTitle: "Proprietor & Contractor - HBK Construction",
+        ownerTitle: "Civil Work Contractor - HBK Construction",
         ownerDesc: "Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.",
         getQuoteBtn: "Get Free Quotation",
-        adminDashboard: "⚙️ Owner Dashboard (Balram Nagar)",
+        adminDashboard: "⚙️ Owner Dashboard (Er. Balram Nagar)",
         addSpecTitle: "🌟 Add / Update My Speciality (Main Work)",
         specTitleLabel: "Speciality Title",
         specDescLabel: "Speciality Description",
         specPhotoLabel: "Select Photo (Max 5MB)",
         publishSpecBtn: "Publish Speciality on Top",
-        addProjTitle: "📸 Add New Project Work (Photo & Description)",
+        addOngoingTitle: "🚧 Add Ongoing Project (Current Work)",
+        ongoingTitleLabel: "Project Title",
+        ongoingDescLabel: "Project Description / Details",
+        ongoingPhotoLabel: "Select Work Photo (Max 5MB)",
+        publishOngoingBtn: "Publish Ongoing Project",
+        addProjTitle: "📸 Add Completed Project Work (Photo & Description)",
         projTitleLabel: "Project Title",
         projDescLabel: "Project Description / Details",
         projPhotoLabel: "Select Work Photo (Max 5MB)",
-        publishProjBtn: "Publish Project Work",
+        publishProjBtn: "Publish Completed Project",
         updateProfileTitle: "👤 Update Profile Photo",
         profilePhotoLabel: "Select Profile Photo",
         updateProfileBtn: "Update Profile Photo",
         specSectionTitle: "🌟 My Speciality & Core Expertise",
+        ongoingSectionTitle: "🚧 Ongoing Projects & Works",
         projSectionTitle: "🏗️ Completed Projects & Works",
         contactSectionTitle: "📞 Direct Contact & Quotation",
         ownerLabel: "Owner",
@@ -238,24 +262,30 @@ const translations = {
     hi: {
         adminLogin: "🔐 एडमिन लॉगिन",
         logout: "🚪 लॉगout",
-        ownerTitle: "प्रोपराइटर & कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन",
-        ownerDesc: "प्रोफेशनल हाईवे निर्माण, ब्रिज डेवलपमेंट, डामर पेविंग और भारी सिविल इंजीनियरिंग समाधान।",
+        ownerTitle: "सिविल वर्क कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन",
+        ownerDesc: "स्लिप फॉर्म पेवर और मैन्युअल के साथ PQC, DLC, स्टैम्पेड कंक्रीट, ड्रेन, यूटिलिटी, पेवर ब्लॉक वर्क और डिपार्टमेंटल लेबर सप्लाई में प्रोफेशनल।",
         getQuoteBtn: "फ्री कोटेशन प्राप्त करें",
-        adminDashboard: "⚙️ ओनर डैशबोर्ड (बलराम नगर)",
+        adminDashboard: "⚙️ ओनर डैशबोर्ड (इंजी. बलराम नागर)",
         addSpecTitle: "🌟 अपनी स्पेशलिटी (मुख्य काम) जोड़ें / अपडेट करें",
         specTitleLabel: "स्पेशलिटी टाइटल",
         specDescLabel: "स्पेशलिटी विवरण",
         specPhotoLabel: "फोटो चुनें (अधिकतम 5MB)",
         publishSpecBtn: "सबसे ऊपर स्पेशलिटी पब्लिश करें",
-        addProjTitle: "📸 नया प्रोजेक्ट वर्क जोड़ें (फोटो और विवरण)",
+        addOngoingTitle: "🚧 ऑनगोइंग प्रोजेक्ट जोड़ें (वर्तमान कार्य)",
+        ongoingTitleLabel: "प्रोजेक्ट टाइटल",
+        ongoingDescLabel: "प्रोजेक्ट विवरण / डिटेल्स",
+        ongoingPhotoLabel: "वर्क फोटो चुनें (अधिकतम 5MB)",
+        publishOngoingBtn: "ऑनगोइंग प्रोजेक्ट पब्लिश करें",
+        addProjTitle: "📸 पूर्ण प्रोजेक्ट वर्क जोड़ें (फोटो और विवरण)",
         projTitleLabel: "प्रोजेक्ट टाइटल",
         projDescLabel: "प्रोजेक्ट विवरण / डिटेल्स",
         projPhotoLabel: "वर्क फोटो चुनें (अधिकतम 5MB)",
-        publishProjBtn: "प्रोजेक्ट वर्क पब्लिश करें",
+        publishProjBtn: "पूर्ण प्रोजेक्ट पब्लिश करें",
         updateProfileTitle: "👤 प्रोफाइल फोटो अपडेट करें",
         profilePhotoLabel: "प्रोफाइल फोटो चुनें",
         updateProfileBtn: "प्रोफाइल फोटो अपडेट करें",
         specSectionTitle: "🌟 मेरी स्पेशलिटी और मुख्य विशेषज्ञता",
+        ongoingSectionTitle: "🚧 चल रहे प्रोजेक्ट्स और कार्य (Ongoing Projects)",
         projSectionTitle: "🏗️ पूर्ण किए गए प्रोजेक्ट्स और कार्य",
         contactSectionTitle: "📞 सीधा संपर्क और कोटेशन",
         ownerLabel: "ओनर",
@@ -286,7 +316,6 @@ function applyLanguage() {
         if(t[key]) el.innerText = t[key];
     });
 
-    // Toggle button text
     const langBtn = document.getElementById("langToggleBtn");
     if(currentLang === "en") {
         langBtn.innerText = "🌐 हिंदी";
@@ -321,6 +350,7 @@ function handleAdminBtnClick() {
         checkAdminStatus();
         showToast(currentLang === 'en' ? "Logged out successfully." : "सफलतापूर्वक लॉग आउट हो गया।");
         loadSpeciality();
+        loadOngoingProjects();
         loadProjects();
         loadOwnerProfile();
     } else {
@@ -341,6 +371,7 @@ function executeAdminLogin() {
         checkAdminStatus();
         showToast(currentLang === 'en' ? "Welcome Balram Nagar ji!" : "स्वागत है बलराम नगर जी!");
         loadSpeciality();
+        loadOngoingProjects();
         loadProjects();
         loadOwnerProfile();
     } else {
@@ -458,16 +489,67 @@ async function loadSpeciality() {
             <img src="${s.image_url}" class="speciality-img" alt="${s.name}">
             <div class="speciality-title">⭐ ${s.name}</div>
             <div class="speciality-desc">${s.quantity || ''}</div>
-            ${isAdminLoggedIn ? `<button onclick="deleteSpeciality('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Speciality' : 'स्पेशलिटी डिलीट करें'}</button>` : ''}
+            ${isAdminLoggedIn ? `<button onclick="deleteProduct('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Speciality' : 'स्पेशलिटी डिलीट करें'}</button>` : ''}
         </div>
     `;
 }
 
-async function deleteSpeciality(id) {
-    if(confirm(currentLang === 'en' ? "Delete this speciality?" : "क्या आप इस स्पेशलिटी को डिलीट करना चाहते हैं?")) {
-        await supabaseClient.from("products").delete().eq("id", id);
-        loadSpeciality();
+// Upload Ongoing Project
+async function uploadOngoingWork() {
+    const title = document.getElementById("newOngoingTitle").value.trim();
+    const desc = document.getElementById("newOngoingDesc").value.trim();
+    const imageInput = document.getElementById("newOngoingImageFile");
+
+    if(!title || imageInput.files.length === 0) {
+        alert(currentLang === 'en' ? "Please select both Project Title and Photo!" : "कृपया प्रोजेक्ट टाइटल और फोटो दोनों चुनें!");
+        return;
     }
+
+    showToast(currentLang === 'en' ? "Uploading Ongoing Project..." : "ऑनगोइंग प्रोजेक्ट अपलोड हो रहा है...");
+
+    try {
+        const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_ongoing");
+
+        const { error: dbError } = await supabaseClient.from("products").insert([{
+            name: title,
+            quantity: desc,
+            price: 0,
+            type: 'OngoingProject',
+            image_url: imageUrl,
+            created_at: new Date().toISOString()
+        }]);
+
+        if(dbError) throw new Error("Database: " + dbError.message);
+
+        alert(currentLang === 'en' ? "🎉 Ongoing project is now live!" : "🎉 ऑनगोइंग प्रोजेक्ट लाइव हो गया है!");
+        document.getElementById("newOngoingTitle").value = "";
+        document.getElementById("newOngoingDesc").value = "";
+        imageInput.value = "";
+        loadOngoingProjects();
+    } catch (err) {
+        alert("❌ Error: " + err.message);
+    }
+}
+
+async function loadOngoingProjects() {
+    const container = document.getElementById("ongoingContainer");
+    const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "OngoingProject").order("created_at", { ascending: false });
+
+    if(!projects || projects.length === 0) {
+        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No ongoing projects added yet.' : 'अभी तक कोई ऑनगोइंग प्रोजेक्ट नहीं जोड़ा गया है।'}</p>`;
+        return;
+    }
+
+    container.innerHTML = projects.map(p => `
+        <div class="project-card" style="border: 2px solid #0284c7;">
+            <img src="${p.image_url}" class="project-img" alt="${p.name}">
+            <div class="project-info">
+                <div class="project-title" style="color:#0369a1;">🚧 ${p.name}</div>
+                <div class="project-desc">${p.quantity || ''}</div>
+                ${isAdminLoggedIn ? `<button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Project' : 'प्रोजेक्ट डिलीट करें'}</button>` : ''}
+            </div>
+        </div>
+    `).join('');
 }
 
 async function uploadProjectWork() {
@@ -496,7 +578,7 @@ async function uploadProjectWork() {
 
         if(dbError) throw new Error("Database: " + dbError.message);
 
-        alert(currentLang === 'en' ? "🎉 New project work & description is now live!" : "🎉 नया प्रोजेक्ट वर्क और विवरण लाइव हो गया है!");
+        alert(currentLang === 'en' ? "🎉 New completed project work & description is now live!" : "🎉 नया पूर्ण प्रोजेक्ट वर्क और विवरण लाइव हो गया है!");
         document.getElementById("newProjectTitle").value = "";
         document.getElementById("newProjectDesc").value = "";
         imageInput.value = "";
@@ -511,7 +593,7 @@ async function loadProjects() {
     const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "ConstructionProject").order("created_at", { ascending: false });
 
     if(!projects || projects.length === 0) {
-        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No completed projects added yet.' : 'अभी तक कोई प्रोजेक्ट वर्क नहीं जोड़ा गया है।'}</p>`;
+        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No completed projects added yet.' : 'अभी तक कोई पूर्ण प्रोजेक्ट नहीं जोड़ा गया है।'}</p>`;
         return;
     }
 
@@ -521,15 +603,17 @@ async function loadProjects() {
             <div class="project-info">
                 <div class="project-title">${p.name}</div>
                 <div class="project-desc">${p.quantity || ''}</div>
-                ${isAdminLoggedIn ? `<button onclick="deleteProject('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Work' : 'काम डिलीट करें'}</button>` : ''}
+                ${isAdminLoggedIn ? `<button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Work' : 'काम डिलीट करें'}</button>` : ''}
             </div>
         </div>
     `).join('');
 }
 
-async function deleteProject(id) {
-    if(confirm(currentLang === 'en' ? "Delete this project work?" : "क्या आप इस प्रोजेक्ट वर्क को डिलीट करना चाहते हैं?")) {
+async function deleteProduct(id) {
+    if(confirm(currentLang === 'en' ? "Delete this item?" : "क्या आप इसे डिलीट करना चाहते हैं?")) {
         await supabaseClient.from("products").delete().eq("id", id);
+        loadSpeciality();
+        loadOngoingProjects();
         loadProjects();
     }
 }
@@ -569,6 +653,7 @@ function showToast(msg) {
 applyLanguage();
 loadOwnerProfile();
 loadSpeciality();
+loadOngoingProjects();
 loadProjects();
 </script>
 </body>
