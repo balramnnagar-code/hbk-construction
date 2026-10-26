@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>HBK Construction - Road & Civil Work Contractor</title>
+<title id="pageTitle">HBK Construction - Road & Civil Work Contractor</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;}
 body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 
 /* HEADER */
-.header{background:linear-gradient(135deg,#1e3a8a,#0f172a);color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;}
-.logo-area{font-size:18px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;gap:6px;}
+.header{background:linear-gradient(135deg,#1e3a8a,#0f172a);color:white;padding:12px 15px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;justify-content:space-between;align-items:center;}
+.logo-area{font-size:17px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;gap:6px;}
 .logo-area span{color:#f59e0b;}
-.admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
+.header-btns{display:flex;gap:6px;align-items:center;}
+.admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
+.lang-btn{background:#f59e0b;color:#0f172a;border:none;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
 
-/* HERO BANNER - FULL SIZE PROFILE PHOTO FIX */
+/* HERO BANNER */
 .hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
 .owner-profile-img{width:110px;height:110px;border-radius:12px;object-fit:contain;background:white;padding:4px;border:2px solid #f59e0b;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
 .hero h1{font-size:22px;font-weight:800;margin-bottom:4px;color:#f8fafc;}
@@ -74,48 +76,51 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <div class="logo-area">
         🚧 <span>HBK</span> Construction
     </div>
-    <button class="admin-login-btn" onclick="handleAdminBtnClick()" id="adminNavBtn">🔐 Admin Login</button>
+    <div class="header-btns">
+        <button class="lang-btn" onclick="toggleLanguage()" id="langToggleBtn">🌐 हिंदी</button>
+        <button class="admin-login-btn" onclick="handleAdminBtnClick()" id="adminNavBtn">🔐 Admin Login</button>
+    </div>
 </header>
 
 <section class="hero">
     <img id="displayOwnerImg" src="https://via.placeholder.com/110?text=Balram+Nagar" class="owner-profile-img" alt="Balram Nagar">
     <h1>Balram Nagar</h1>
-    <h3>Proprietor & Contractor - HBK Construction</h3>
-    <p>Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
-    <button class="cta-btn" onclick="scrollToSection('contactSection')">Get Free Quotation</button>
+    <h3 data-i18n="ownerTitle">Proprietor & Contractor - HBK Construction</h3>
+    <p data-i18n="ownerDesc">Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
+    <button class="cta-btn" onclick="scrollToSection('contactSection')" data-i18n="getQuoteBtn">Get Free Quotation</button>
 </section>
 
 <!-- ADMIN DASHBOARD PANEL -->
 <div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
-    <div class="section-title" style="color:#1e3a8a;">⚙️ Owner Dashboard (Balram Nagar)</div>
+    <div class="section-title" style="color:#1e3a8a;" data-i18n="adminDashboard">⚙️ Owner Dashboard (Balram Nagar)</div>
     
     <!-- Speciality Management Box -->
     <div class="form-box" style="margin-bottom:15px;border:2px dashed #f59e0b;">
-        <h3 style="color:#b45309;">🌟 Add / Update My Speciality (Main Work)</h3>
-        <div class="form-group"><label>Speciality Title</label><input type="text" id="newSpecTitle" placeholder="e.g. Expert in Highway & Road Construction"></div>
-        <div class="form-group"><label>Speciality Description</label><textarea id="newSpecDesc" rows="2" placeholder="Write details about your specialty..."></textarea></div>
-        <div class="form-group"><label>Select Photo (Max 5MB)</label><input type="file" id="newSpecImageFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;">Publish Speciality on Top</button>
+        <h3 style="color:#b45309;" data-i18n="addSpecTitle">🌟 Add / Update My Speciality (Main Work)</h3>
+        <div class="form-group"><label data-i18n="specTitleLabel">Speciality Title</label><input type="text" id="newSpecTitle" placeholder="e.g. Expert in Highway & Road Construction"></div>
+        <div class="form-group"><label data-i18n="specDescLabel">Speciality Description</label><textarea id="newSpecDesc" rows="2" placeholder="Write details about your specialty..."></textarea></div>
+        <div class="form-group"><label data-i18n="specPhotoLabel">Select Photo (Max 5MB)</label><input type="file" id="newSpecImageFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;" data-i18n="publishSpecBtn">Publish Speciality on Top</button>
     </div>
 
     <div class="form-box" style="margin-bottom:15px;">
-        <h3>📸 Add New Project Work (Photo & Description)</h3>
-        <div class="form-group"><label>Project Title</label><input type="text" id="newProjectTitle" placeholder="e.g. State Highway Road Work"></div>
-        <div class="form-group"><label>Project Description / Details</label><textarea id="newProjectDesc" rows="2" placeholder="Write description about this work..."></textarea></div>
-        <div class="form-group"><label>Select Work Photo (Max 5MB)</label><input type="file" id="newProjectImageFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;">Publish Project Work</button>
+        <h3 data-i18n="addProjTitle">📸 Add New Project Work (Photo & Description)</h3>
+        <div class="form-group"><label data-i18n="projTitleLabel">Project Title</label><input type="text" id="newProjectTitle" placeholder="e.g. State Highway Road Work"></div>
+        <div class="form-group"><label data-i18n="projDescLabel">Project Description / Details</label><textarea id="newProjectDesc" rows="2" placeholder="Write description about this work..."></textarea></div>
+        <div class="form-group"><label data-i18n="projPhotoLabel">Select Work Photo (Max 5MB)</label><input type="file" id="newProjectImageFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadProjectWork()" style="background:#16a34a;" data-i18n="publishProjBtn">Publish Project Work</button>
     </div>
 
     <div class="form-box">
-        <h3>👤 Update Profile Photo</h3>
-        <div class="form-group"><label>Select Profile Photo</label><input type="file" id="ownerProfileFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadOwnerProfilePhoto()" style="background:#ca8a04;">Update Profile Photo</button>
+        <h3 data-i18n="updateProfileTitle">👤 Update Profile Photo</h3>
+        <div class="form-group"><label data-i18n="profilePhotoLabel">Select Profile Photo</label><input type="file" id="ownerProfileFile" accept="image/*"></div>
+        <button class="submit-btn" onclick="uploadOwnerProfilePhoto()" style="background:#ca8a04;" data-i18n="updateProfileBtn">Update Profile Photo</button>
     </div>
 </div>
 
 <!-- HIGHLIGHTED FIRST SECTION: MY SPECIALITY / MAIN WORK -->
 <div class="section">
-    <div class="section-title">🌟 My Speciality & Core Expertise</div>
+    <div class="section-title" data-i18n="specSectionTitle">🌟 My Speciality & Core Expertise</div>
     <div class="speciality-container" id="specialityContainer">
         <p style="text-align:center;color:#64748b;padding:10px;">Loading speciality...</p>
     </div>
@@ -123,26 +128,26 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 
 <!-- PUBLIC PROJECTS SECTION -->
 <div class="section">
-    <div class="section-title">🏗️ Completed Projects & Works</div>
+    <div class="section-title" data-i18n="projSectionTitle">🏗️ Completed Projects & Works</div>
     <div class="projects-grid" id="projectsContainer">
         <p style="text-align:center;color:#64748b;padding:15px;">Loading completed projects...</p>
     </div>
 </div>
 
 <div class="section" id="contactSection">
-    <div class="section-title">📞 Direct Contact & Quotation</div>
+    <div class="section-title" data-i18n="contactSectionTitle">📞 Direct Contact & Quotation</div>
     
     <div class="contact-info-card">
-        👤 <b>Owner:</b> Balram Nagar<br>
-        📞 <b>Mobile:</b> +91 6260832599<br>
-        📧 <b>Email:</b> balramnnagar0077@gmail.com<br>
-        📍 <b>Work Area:</b> Road & Civil Construction Contractor
+        👤 <b data-i18n="ownerLabel">Owner</b>: Balram Nagar<br>
+        📞 <b data-i18n="mobileLabel">Mobile</b>: +91 6260832599<br>
+        📧 <b data-i18n="emailLabel">Email</b>: balramnnagar0077@gmail.com<br>
+        📍 <b data-i18n="workAreaLabel">Work Area</b>: Road & Civil Construction Contractor
     </div>
 
     <div class="form-box">
-        <div class="form-group"><label>Full Name</label><input type="text" id="clientName" placeholder="Enter your name"></div>
-        <div class="form-group"><label>Mobile Number</label><input type="tel" id="clientMobile" placeholder="Enter mobile number"></div>
-        <div class="form-group"><label>Project Type</label>
+        <div class="form-group"><label data-i18n="nameLabel">Full Name</label><input type="text" id="clientName" placeholder="Enter your name"></div>
+        <div class="form-group"><label data-i18n="mobileInputLabel">Mobile Number</label><input type="tel" id="clientMobile" placeholder="Enter mobile number"></div>
+        <div class="form-group"><label data-i18n="projectTypeLabel">Project Type</label>
             <select id="projectType">
                 <option value="Road Construction">Road Construction</option>
                 <option value="Bridge Work">Bridge Work</option>
@@ -150,10 +155,10 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
                 <option value="Other">Other</option>
             </select>
         </div>
-        <div class="form-group"><label>Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
-        <button class="submit-btn" onclick="submitInquiry()">Submit Inquiry</button>
-        <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn">💬 Direct WhatsApp Chat (+91 6260832599)</a>
-        <a id="emailDirectBtn" href="#" class="email-btn">📧 Send Direct Email</a>
+        <div class="form-group"><label data-i18n="projectDetailsLabel">Project Details / Location</label><textarea id="projectDetails" rows="3" placeholder="Describe your requirement..."></textarea></div>
+        <button class="submit-btn" onclick="submitInquiry()" data-i18n="submitInquiryBtn">Submit Inquiry</button>
+        <a id="whatsappDirectBtn" href="#" target="_blank" class="whatsapp-btn" data-i18n="whatsappBtn">💬 Direct WhatsApp Chat (+91 6260832599)</a>
+        <a id="emailDirectBtn" href="#" class="email-btn" data-i18n="emailBtn">📧 Send Direct Email</a>
     </div>
 </div>
 
@@ -161,17 +166,17 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 <div class="modal" id="adminLoginModal">
   <div class="modal-box">
     <span class="close" onclick="closeModal('adminLoginModal')">×</span>
-    <h2 style="color:#1e3a8a;margin-bottom:12px;">🔐 Owner Login (Balram Nagar)</h2>
-    <div class="form-group"><label>Email Address</label><input type="email" id="adminEmail" placeholder="balramnnagar0077@gmail.com"></div>
-    <div class="form-group"><label>Password</label><input type="password" id="adminPassword" placeholder="Enter password"></div>
-    <button class="submit-btn" onclick="executeAdminLogin()">Login</button>
+    <h2 style="color:#1e3a8a;margin-bottom:12px;" data-i18n="modalTitle">🔐 Owner Login (Balram Nagar)</h2>
+    <div class="form-group"><label data-i18n="emailLabelModal">Email Address</label><input type="email" id="adminEmail" placeholder="balramnnagar0077@gmail.com"></div>
+    <div class="form-group"><label data-i18n="passLabelModal">Password</label><input type="password" id="adminPassword" placeholder="Enter password"></div>
+    <button class="submit-btn" onclick="executeAdminLogin()" data-i18n="loginBtnModal">Login</button>
   </div>
 </div>
 
 <div class="bottom-nav">
-    <button class="nav-item active" onclick="scrollToSection('contactSection')"><span class="nav-icon">🏠</span>Home</button>
-    <button class="nav-item" onclick="scrollToSection('contactSection')"><span class="nav-icon">📋</span>Quote</button>
-    <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span>Call</a>
+    <button class="nav-item active" onclick="scrollToSection('contactSection')"><span class="nav-icon">🏠</span><span data-i18n="navHome">Home</span></button>
+    <button class="nav-item" onclick="scrollToSection('contactSection')"><span class="nav-icon">📋</span><span data-i18n="navQuote">Quote</span></button>
+    <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span><span data-i18n="navCall">Call</span></a>
 </div>
 
 <div id="toast">Inquiry Submitted Successfully!</div>
@@ -184,13 +189,128 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_
 const ADMIN_EMAIL = "balramnnagar0077@gmail.com";
 let isAdminLoggedIn = localStorage.getItem("hbk_admin_logged") === "true";
 
+// Translation Dictionary (Default: English)
+let currentLang = localStorage.getItem("hbk_lang") || "en";
+
+const translations = {
+    en: {
+        adminLogin: "🔐 Admin Login",
+        logout: "🚪 Logout",
+        ownerTitle: "Proprietor & Contractor - HBK Construction",
+        ownerDesc: "Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.",
+        getQuoteBtn: "Get Free Quotation",
+        adminDashboard: "⚙️ Owner Dashboard (Balram Nagar)",
+        addSpecTitle: "🌟 Add / Update My Speciality (Main Work)",
+        specTitleLabel: "Speciality Title",
+        specDescLabel: "Speciality Description",
+        specPhotoLabel: "Select Photo (Max 5MB)",
+        publishSpecBtn: "Publish Speciality on Top",
+        addProjTitle: "📸 Add New Project Work (Photo & Description)",
+        projTitleLabel: "Project Title",
+        projDescLabel: "Project Description / Details",
+        projPhotoLabel: "Select Work Photo (Max 5MB)",
+        publishProjBtn: "Publish Project Work",
+        updateProfileTitle: "👤 Update Profile Photo",
+        profilePhotoLabel: "Select Profile Photo",
+        updateProfileBtn: "Update Profile Photo",
+        specSectionTitle: "🌟 My Speciality & Core Expertise",
+        projSectionTitle: "🏗️ Completed Projects & Works",
+        contactSectionTitle: "📞 Direct Contact & Quotation",
+        ownerLabel: "Owner",
+        mobileLabel: "Mobile",
+        emailLabel: "Email",
+        workAreaLabel: "Work Area",
+        nameLabel: "Full Name",
+        mobileInputLabel: "Mobile Number",
+        projectTypeLabel: "Project Type",
+        projectDetailsLabel: "Project Details / Location",
+        submitInquiryBtn: "Submit Inquiry",
+        whatsappBtn: "💬 Direct WhatsApp Chat (+91 6260832599)",
+        emailBtn: "📧 Send Direct Email",
+        modalTitle: "🔐 Owner Login (Balram Nagar)",
+        emailLabelModal: "Email Address",
+        passLabelModal: "Password",
+        loginBtnModal: "Login",
+        navHome: "Home",
+        navQuote: "Quote",
+        navCall: "Call"
+    },
+    hi: {
+        adminLogin: "🔐 एडमिन लॉगिन",
+        logout: "🚪 लॉगout",
+        ownerTitle: "प्रोपराइटर & कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन",
+        ownerDesc: "प्रोफेशनल हाईवे निर्माण, ब्रिज डेवलपमेंट, डामर पेविंग और भारी सिविल इंजीनियरिंग समाधान।",
+        getQuoteBtn: "फ्री कोटेशन प्राप्त करें",
+        adminDashboard: "⚙️ ओनर डैशबोर्ड (बलराम नगर)",
+        addSpecTitle: "🌟 अपनी स्पेशलिटी (मुख्य काम) जोड़ें / अपडेट करें",
+        specTitleLabel: "स्पेशलिटी टाइटल",
+        specDescLabel: "स्पेशलिटी विवरण",
+        specPhotoLabel: "फोटो चुनें (अधिकतम 5MB)",
+        publishSpecBtn: "सबसे ऊपर स्पेशलिटी पब्लिश करें",
+        addProjTitle: "📸 नया प्रोजेक्ट वर्क जोड़ें (फोटो और विवरण)",
+        projTitleLabel: "प्रोजेक्ट टाइटल",
+        projDescLabel: "प्रोजेक्ट विवरण / डिटेल्स",
+        projPhotoLabel: "वर्क फोटो चुनें (अधिकतम 5MB)",
+        publishProjBtn: "प्रोजेक्ट वर्क पब्लिश करें",
+        updateProfileTitle: "👤 प्रोफाइल फोटो अपडेट करें",
+        profilePhotoLabel: "प्रोफाइल फोटो चुनें",
+        updateProfileBtn: "प्रोफाइल फोटो अपडेट करें",
+        specSectionTitle: "🌟 मेरी स्पेशलिटी और मुख्य विशेषज्ञता",
+        projSectionTitle: "🏗️ पूर्ण किए गए प्रोजेक्ट्स और कार्य",
+        contactSectionTitle: "📞 सीधा संपर्क और कोटेशन",
+        ownerLabel: "ओनर",
+        mobileLabel: "मोबाइल",
+        emailLabel: "ईमेल",
+        workAreaLabel: "कार्य क्षेत्र",
+        nameLabel: "पूरा नाम",
+        mobileInputLabel: "मोबाइल नंबर",
+        projectTypeLabel: "प्रोजेक्ट का प्रकार",
+        projectDetailsLabel: "प्रोजेक्ट विवरण / लोकेशन",
+        submitInquiryBtn: "इक्वायरी सबमिट करें",
+        whatsappBtn: "💬 डायरेक्ट व्हाट्सएप चैट (+91 6260832599)",
+        emailBtn: "📧 डायरेक्ट ईमेल भेजें",
+        modalTitle: "🔐 ओनर लॉगिन (बलराम नगर)",
+        emailLabelModal: "ईमेल एड्रेस",
+        passLabelModal: "पासवर्ड",
+        loginBtnModal: "लॉगिन",
+        navHome: "होम",
+        navQuote: "कोट",
+        navCall: "कॉल"
+    }
+};
+
+function applyLanguage() {
+    const t = translations[currentLang];
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if(t[key]) el.innerText = t[key];
+    });
+
+    // Toggle button text
+    const langBtn = document.getElementById("langToggleBtn");
+    if(currentLang === "en") {
+        langBtn.innerText = "🌐 हिंदी";
+        document.documentElement.setAttribute("lang", "en");
+    } else {
+        langBtn.innerText = "🌐 English";
+        document.documentElement.setAttribute("lang", "hi");
+    }
+    checkAdminStatus();
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === "en" ? "hi" : "en";
+    localStorage.setItem("hbk_lang", currentLang);
+    applyLanguage();
+}
+
 function checkAdminStatus() {
     if(isAdminLoggedIn) {
         document.getElementById("adminPanelSection").style.display = "block";
-        document.getElementById("adminNavBtn").innerText = "🚪 Logout";
+        document.getElementById("adminNavBtn").innerText = translations[currentLang].logout;
     } else {
         document.getElementById("adminPanelSection").style.display = "none";
-        document.getElementById("adminNavBtn").innerText = "🔐 Admin Login";
+        document.getElementById("adminNavBtn").innerText = translations[currentLang].adminLogin;
     }
 }
 
@@ -199,7 +319,7 @@ function handleAdminBtnClick() {
         localStorage.removeItem("hbk_admin_logged");
         isAdminLoggedIn = false;
         checkAdminStatus();
-        showToast("Logged out successfully.");
+        showToast(currentLang === 'en' ? "Logged out successfully." : "सफलतापूर्वक लॉग आउट हो गया।");
         loadSpeciality();
         loadProjects();
         loadOwnerProfile();
@@ -219,12 +339,12 @@ function executeAdminLogin() {
         isAdminLoggedIn = true;
         closeModal("adminLoginModal");
         checkAdminStatus();
-        showToast("Welcome Balram Nagar ji!");
+        showToast(currentLang === 'en' ? "Welcome Balram Nagar ji!" : "स्वागत है बलराम नगर जी!");
         loadSpeciality();
         loadProjects();
         loadOwnerProfile();
     } else {
-        alert("Galat Email ya Password!");
+        alert(currentLang === 'en' ? "Incorrect Email or Password!" : "गलत ईमेल या पासवर्ड!");
     }
 }
 
@@ -255,11 +375,11 @@ async function loadOwnerProfile() {
 async function uploadOwnerProfilePhoto() {
     const imageInput = document.getElementById("ownerProfileFile");
     if(imageInput.files.length === 0) { 
-        alert("❌ Kripya Profile Photo select karein!"); 
+        alert(currentLang === 'en' ? "Please select a Profile Photo!" : "कृपया प्रोफाइल फोटो चुनें!"); 
         return; 
     }
 
-    showToast("Profile Photo Update ho rahi hai...");
+    showToast(currentLang === 'en' ? "Updating Profile Photo..." : "प्रोफाइल फोटो अपडेट हो रही है...");
 
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
@@ -278,10 +398,10 @@ async function uploadOwnerProfilePhoto() {
         if(dbError) throw dbError;
 
         document.getElementById("displayOwnerImg").src = imageUrl;
-        alert("✅ Profile photo updated successfully!");
+        alert(currentLang === 'en' ? "✅ Profile photo updated successfully!" : "✅ प्रोफाइल फोटो सफलतापूर्वक अपडेट हो गई!");
         imageInput.value = "";
     } catch (err) {
-        alert("❌ Error caught: " + err.message);
+        alert("❌ Error: " + err.message);
     }
 }
 
@@ -291,11 +411,11 @@ async function uploadSpecialityWork() {
     const imageInput = document.getElementById("newSpecImageFile");
 
     if(!title || imageInput.files.length === 0) {
-        alert("❌ Kripya Speciality Title aur Photo dono select karein!");
+        alert(currentLang === 'en' ? "Please select both Speciality Title and Photo!" : "कृपया स्पेशलिटी टाइटल और फोटो दोनों चुनें!");
         return;
     }
 
-    showToast("Speciality upload ho rahi hai...");
+    showToast(currentLang === 'en' ? "Uploading Speciality..." : "स्पेशलिटी अपलोड हो रही है...");
 
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_spec");
@@ -313,13 +433,13 @@ async function uploadSpecialityWork() {
 
         if(dbError) throw dbError;
 
-        alert("🎉 Speciality successfully published on top!");
+        alert(currentLang === 'en' ? "🎉 Speciality successfully published on top!" : "🎉 स्पेशलिटी सफलतापूर्वक सबसे ऊपर पब्लिश हो गई!");
         document.getElementById("newSpecTitle").value = "";
         document.getElementById("newSpecDesc").value = "";
         imageInput.value = "";
         loadSpeciality();
     } catch (err) {
-        alert("❌ Error caught: " + err.message);
+        alert("❌ Error: " + err.message);
     }
 }
 
@@ -328,7 +448,7 @@ async function loadSpeciality() {
     const { data: specList } = await supabaseClient.from("products").select("*").eq("type", "OwnerSpeciality").limit(1);
 
     if(!specList || specList.length === 0) {
-        container.innerHTML = "<p style='text-align:center;color:#64748b;padding:10px;'>Abhi koi specialty add nahi ki gayi hai.</p>";
+        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:10px;'>${currentLang === 'en' ? 'No speciality added yet.' : 'अभी तक कोई स्पेशलिटी जोड़ी नहीं गई है।'}</p>`;
         return;
     }
 
@@ -338,13 +458,13 @@ async function loadSpeciality() {
             <img src="${s.image_url}" class="speciality-img" alt="${s.name}">
             <div class="speciality-title">⭐ ${s.name}</div>
             <div class="speciality-desc">${s.quantity || ''}</div>
-            ${isAdminLoggedIn ? `<button onclick="deleteSpeciality('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">Delete Speciality</button>` : ''}
+            ${isAdminLoggedIn ? `<button onclick="deleteSpeciality('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Speciality' : 'स्पेशलिटी डिलीट करें'}</button>` : ''}
         </div>
     `;
 }
 
 async function deleteSpeciality(id) {
-    if(confirm("Delete this speciality?")) {
+    if(confirm(currentLang === 'en' ? "Delete this speciality?" : "क्या आप इस स्पेशलिटी को डिलीट करना चाहते हैं?")) {
         await supabaseClient.from("products").delete().eq("id", id);
         loadSpeciality();
     }
@@ -356,11 +476,11 @@ async function uploadProjectWork() {
     const imageInput = document.getElementById("newProjectImageFile");
 
     if(!title || imageInput.files.length === 0) {
-        alert("❌ Kripya Project Title aur Work Photo select karein!");
+        alert(currentLang === 'en' ? "Please select both Project Title and Work Photo!" : "कृपया प्रोजेक्ट टाइटल और वर्क फोटो दोनों चुनें!");
         return;
     }
 
-    showToast("Photo upload ho rahi hai...");
+    showToast(currentLang === 'en' ? "Uploading Photo..." : "फोटो अपलोड हो रही है...");
 
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_proj");
@@ -376,13 +496,13 @@ async function uploadProjectWork() {
 
         if(dbError) throw new Error("Database: " + dbError.message);
 
-        alert("🎉 Naya Work Photo aur Description Live ho gaya!");
+        alert(currentLang === 'en' ? "🎉 New project work & description is now live!" : "🎉 नया प्रोजेक्ट वर्क और विवरण लाइव हो गया है!");
         document.getElementById("newProjectTitle").value = "";
         document.getElementById("newProjectDesc").value = "";
         imageInput.value = "";
         loadProjects();
     } catch (err) {
-        alert("❌ Error caught: " + err.message);
+        alert("❌ Error: " + err.message);
     }
 }
 
@@ -391,7 +511,7 @@ async function loadProjects() {
     const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "ConstructionProject").order("created_at", { ascending: false });
 
     if(!projects || projects.length === 0) {
-        container.innerHTML = "<p style='text-align:center;color:#64748b;padding:15px;'>Abhi koi project work add nahi hua hai.</p>";
+        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No completed projects added yet.' : 'अभी तक कोई प्रोजेक्ट वर्क नहीं जोड़ा गया है।'}</p>`;
         return;
     }
 
@@ -401,14 +521,14 @@ async function loadProjects() {
             <div class="project-info">
                 <div class="project-title">${p.name}</div>
                 <div class="project-desc">${p.quantity || ''}</div>
-                ${isAdminLoggedIn ? `<button onclick="deleteProject('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">Delete Work</button>` : ''}
+                ${isAdminLoggedIn ? `<button onclick="deleteProject('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;margin-top:8px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Work' : 'काम डिलीट करें'}</button>` : ''}
             </div>
         </div>
     `).join('');
 }
 
 async function deleteProject(id) {
-    if(confirm("Delete this project work?")) {
+    if(confirm(currentLang === 'en' ? "Delete this project work?" : "क्या आप इस प्रोजेक्ट वर्क को डिलीट करना चाहते हैं?")) {
         await supabaseClient.from("products").delete().eq("id", id);
         loadProjects();
     }
@@ -422,13 +542,16 @@ async function submitInquiry() {
     const type = document.getElementById("projectType").value;
     const details = document.getElementById("projectDetails").value.trim();
 
-    if(!name || !mobile) { alert("Kripya Naam aur Mobile number bharein!"); return; }
+    if(!name || !mobile) { 
+        alert(currentLang === 'en' ? "Please enter your Name and Mobile number!" : "कृपया अपना नाम और मोबाइल नंबर भरें!"); 
+        return; 
+    }
 
     await supabaseClient.from("orders").insert([{
         order_id: "HBK" + Date.now(), customer_name: name, mobile: mobile, address: type + " - " + details, total: 0, status: 'New Inquiry (Balram Nagar)', order_date: new Date().toISOString()
     }]);
 
-    showToast("✅ Inquiry Submitted Successfully!");
+    showToast(currentLang === 'en' ? "✅ Inquiry Submitted Successfully!" : "✅ इन्क्वायरी सफलतापूर्वक सबमिट हो गई!");
     const waText = encodeURIComponent("Hello Balram Nagar ji, I want an inquiry for " + type + ". My name is " + name + ". Details: " + details);
     window.open("https://api.whatsapp.com/send?phone=916260832599&text=" + waText, "_blank");
 }
@@ -443,7 +566,7 @@ function showToast(msg) {
     setTimeout(() => { t.style.display = "none"; }, 4000);
 }
 
-checkAdminStatus();
+applyLanguage();
 loadOwnerProfile();
 loadSpeciality();
 loadProjects();
