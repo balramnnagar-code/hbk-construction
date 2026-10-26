@@ -15,9 +15,9 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .logo-area span{color:#f59e0b;}
 .admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
 
-/* HERO BANNER */
+/* HERO BANNER - FULL SIZE PROFILE PHOTO FIX */
 .hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
-.owner-profile-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #f59e0b;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+.owner-profile-img{width:110px;height:110px;border-radius:12px;object-fit:contain;background:white;padding:4px;border:2px solid #f59e0b;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
 .hero h1{font-size:22px;font-weight:800;margin-bottom:4px;color:#f8fafc;}
 .hero h3{font-size:14px;color:#f59e0b;margin-bottom:8px;font-weight:600;}
 .hero p{font-size:12px;opacity:0.9;margin-bottom:15px;line-height:1.4;}
@@ -78,7 +78,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 </header>
 
 <section class="hero">
-    <img id="displayOwnerImg" src="https://via.placeholder.com/90?text=Balram+Nagar" class="owner-profile-img" alt="Balram Nagar">
+    <img id="displayOwnerImg" src="https://via.placeholder.com/110?text=Balram+Nagar" class="owner-profile-img" alt="Balram Nagar">
     <h1>Balram Nagar</h1>
     <h3>Proprietor & Contractor - HBK Construction</h3>
     <p>Professional Highway Construction, Bridge Development, Asphalt Paving & Heavy Civil Engineering Solutions.</p>
@@ -228,7 +228,6 @@ function executeAdminLogin() {
     }
 }
 
-// Robust File Uploader Function
 async function uploadFileToSupabase(file, filePrefix) {
     const cleanFileName = filePrefix + "_" + Date.now() + ".jpg";
     const arrayBuffer = await file.arrayBuffer();
@@ -246,7 +245,6 @@ async function uploadFileToSupabase(file, filePrefix) {
     return urlData.publicUrl;
 }
 
-// Load Profile Photo on Page Open
 async function loadOwnerProfile() {
     const { data: profileList } = await supabaseClient.from("products").select("*").eq("type", "OwnerProfile").limit(1);
     if(profileList && profileList.length > 0) {
@@ -266,7 +264,6 @@ async function uploadOwnerProfilePhoto() {
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
 
-        // Save profile photo URL in database
         await supabaseClient.from("products").delete().eq("type", "OwnerProfile");
 
         const { error: dbError } = await supabaseClient.from("products").insert([{
@@ -281,7 +278,7 @@ async function uploadOwnerProfilePhoto() {
         if(dbError) throw dbError;
 
         document.getElementById("displayOwnerImg").src = imageUrl;
-        alert("✅ Profile photo updated and saved successfully!");
+        alert("✅ Profile photo updated successfully!");
         imageInput.value = "";
     } catch (err) {
         alert("❌ Error caught: " + err.message);
@@ -377,7 +374,7 @@ async function uploadProjectWork() {
             created_at: new Date().toISOString()
         }]);
 
-        if(dbError) throw dbError;
+        if(dbError) throw new Error("Database: " + dbError.message);
 
         alert("🎉 Naya Work Photo aur Description Live ho gaya!");
         document.getElementById("newProjectTitle").value = "";
