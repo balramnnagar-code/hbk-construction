@@ -207,7 +207,6 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_
 const ADMIN_EMAIL = "balramnnagar0077@gmail.com";
 let isAdminLoggedIn = localStorage.getItem("hbk_admin_logged") === "true";
 
-// Translation Dictionary (Default: English)
 let currentLang = localStorage.getItem("hbk_lang") || "en";
 
 const translations = {
@@ -396,10 +395,11 @@ async function uploadFileToSupabase(file, filePrefix) {
     return urlData.publicUrl;
 }
 
-async function loadOwnerProfile() {
-    const { data: profileList } = await supabaseClient.from("products").select("*").eq("type", "OwnerProfile").limit(1);
-    if(profileList && profileList.length > 0) {
-        document.getElementById("displayOwnerImg").src = profileList[0].image_url;
+// Load Profile Photo from LocalStorage directly (Prevents Jalvigo product clash)
+function loadOwnerProfile() {
+    const savedProfileUrl = localStorage.getItem("hbk_owner_profile_url");
+    if(savedProfileUrl) {
+        document.getElementById("displayOwnerImg").src = savedProfileUrl;
     }
 }
 
@@ -414,21 +414,11 @@ async function uploadOwnerProfilePhoto() {
 
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_profile");
-
-        await supabaseClient.from("products").delete().eq("type", "OwnerProfile");
-
-        const { error: dbError } = await supabaseClient.from("products").insert([{
-            name: "Owner Profile",
-            quantity: "Profile Picture",
-            price: 0,
-            type: 'OwnerProfile',
-            image_url: imageUrl,
-            created_at: new Date().toISOString()
-        }]);
-
-        if(dbError) throw dbError;
-
+        
+        // Save locally to avoid Supabase products table pollution
+        localStorage.setItem("hbk_owner_profile_url", imageUrl);
         document.getElementById("displayOwnerImg").src = imageUrl;
+
         alert(currentLang === 'en' ? "✅ Profile photo updated successfully!" : "✅ प्रोफाइल फोटो सफलतापूर्वक अपडेट हो गई!");
         imageInput.value = "";
     } catch (err) {
@@ -494,7 +484,6 @@ async function loadSpeciality() {
     `;
 }
 
-// Upload Ongoing Project
 async function uploadOngoingWork() {
     const title = document.getElementById("newOngoingTitle").value.trim();
     const desc = document.getElementById("newOngoingDesc").value.trim();
