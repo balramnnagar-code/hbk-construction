@@ -551,7 +551,7 @@ async function uploadSpecialityWork() {
             name: title,
             quantity: desc,
             price: 0,
-            type: 'OwnerSpeciality',
+            type: 'hbk_speciality',
             image_url: imageUrl,
             created_at: new Date().toISOString()
         }]);
@@ -570,9 +570,9 @@ async function uploadSpecialityWork() {
 
 async function loadSpeciality() {
     const container = document.getElementById("specialityContainer");
-    const { data: specList } = await supabaseClient.from("products").select("*").eq("type", "OwnerSpeciality").order("created_at", { ascending: false });
+    const { data: specList, error } = await supabaseClient.from("products").select("*").eq("type", "hbk_speciality").order("created_at", { ascending: false });
 
-    if(!specList || specList.length === 0) {
+    if(error || !specList || specList.length === 0) {
         container.innerHTML = `<p style='text-align:center;color:#64748b;padding:10px;'>${currentLang === 'en' ? 'No work added yet.' : 'अभी तक कोई कार्य जोड़ा नहीं गया है।'}</p>`;
         return;
     }
@@ -585,8 +585,8 @@ async function loadSpeciality() {
                 <div class="project-desc">${s.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal(${s.id}, '${encodeURIComponent(s.name)}', '${encodeURIComponent(s.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct(${s.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal('${s.id}', '${encodeURIComponent(s.name)}', '${encodeURIComponent(s.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct('${s.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
@@ -612,7 +612,7 @@ async function uploadOngoingWork() {
             name: title,
             quantity: desc,
             price: 0,
-            type: 'OngoingProject',
+            type: 'hbk_ongoing',
             image_url: imageUrl,
             created_at: new Date().toISOString()
         }]);
@@ -631,9 +631,9 @@ async function uploadOngoingWork() {
 
 async function loadOngoingProjects() {
     const container = document.getElementById("ongoingContainer");
-    const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "OngoingProject").order("created_at", { ascending: false });
+    const { data: projects, error } = await supabaseClient.from("products").select("*").eq("type", "hbk_ongoing").order("created_at", { ascending: false });
 
-    if(!projects || projects.length === 0) {
+    if(error || !projects || projects.length === 0) {
         container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No ongoing projects added yet.' : 'अभी तक कोई ऑनगोइंग प्रोजेक्ट नहीं जोड़ा गया है।'}</p>`;
         return;
     }
@@ -646,8 +646,8 @@ async function loadOngoingProjects() {
                 <div class="project-desc">${p.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal(${p.id}, '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct(${p.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal('${p.id}', '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
@@ -673,7 +673,7 @@ async function uploadProjectWork() {
             name: title,
             quantity: desc,
             price: 0,
-            type: 'ConstructionProject',
+            type: 'hbk_project',
             image_url: imageUrl,
             created_at: new Date().toISOString()
         }]);
@@ -692,9 +692,9 @@ async function uploadProjectWork() {
 
 async function loadProjects() {
     const container = document.getElementById("projectsContainer");
-    const { data: projects } = await supabaseClient.from("products").select("*").eq("type", "ConstructionProject").order("created_at", { ascending: false });
+    const { data: projects, error } = await supabaseClient.from("products").select("*").eq("type", "hbk_project").order("created_at", { ascending: false });
 
-    if(!projects || projects.length === 0) {
+    if(error || !projects || projects.length === 0) {
         container.innerHTML = `<p style='text-align:center;color:#64748b;padding:15px;'>${currentLang === 'en' ? 'No completed projects added yet.' : 'अभी तक कोई पूर्ण प्रोजेक्ट नहीं जोड़ा गया है।'}</p>`;
         return;
     }
@@ -707,8 +707,8 @@ async function loadProjects() {
                 <div class="project-desc">${p.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal(${p.id}, '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct(${p.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal('${p.id}', '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
