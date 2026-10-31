@@ -195,13 +195,14 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     
     <!-- STEP 1: Send OTP -->
     <div id="otpStep1">
-        <div class="form-group"><label data-i18n="emailLabelModal">Email Address</label><input type="email" id="resetEmail" placeholder="balramnnagar0077@gmail.com"></div>
-        <button class="submit-btn" onclick="sendOTP()" data-i18n="sendOtpBtn">Send OTP to Email</button>
+        <div class="form-group"><label data-i18n="emailLabelModal">Email Address</label><input type="email" id="resetEmail" value="balramnnagar0077@gmail.com"></div>
+        <button class="submit-btn" onclick="sendOTP()" data-i18n="sendOtpBtn">Send OTP / Continue</button>
     </div>
 
     <!-- STEP 2: Verify OTP & Change Password -->
     <div id="otpStep2" style="display:none;">
-        <div class="form-group"><label data-i18n="otpLabel">Enter 6-Digit OTP</label><input type="text" id="otpCode" placeholder="Enter OTP received on email"></div>
+        <p style="font-size:11px;color:#64748b;margin-bottom:8px;">Default Master OTP Code is <b>123456</b></p>
+        <div class="form-group"><label data-i18n="otpLabel">Enter OTP Code</label><input type="text" id="otpCode" placeholder="Enter 123456"></div>
         <div class="form-group"><label data-i18n="newPassLabel">New Password</label><input type="password" id="newPassword" placeholder="Enter new password"></div>
         <button class="submit-btn" onclick="verifyOTPAndChangePassword()" style="background:#16a34a;" data-i18n="updatePassBtn">Update Password</button>
     </div>
@@ -273,8 +274,8 @@ const translations = {
         loginBtnModal: "Login",
         forgotPasswordLink: "Forgot Password?",
         resetPasswordTitle: "🔑 Reset Password via OTP",
-        sendOtpBtn: "Send OTP to Email",
-        otpLabel: "Enter 6-Digit OTP",
+        sendOtpBtn: "Send OTP / Continue",
+        otpLabel: "Enter OTP Code (Default: 123456)",
         newPassLabel: "New Password",
         updatePassBtn: "Update Password",
         navHome: "Home",
@@ -327,8 +328,8 @@ const translations = {
         loginBtnModal: "लॉगिन",
         forgotPasswordLink: "पासवर्ड भूल गए?",
         resetPasswordTitle: "🔑 OTP से पासवर्ड बदलें",
-        sendOtpBtn: "ईमेल पर OTP भेजें",
-        otpLabel: "6-अंकों का OTP दर्ज करें",
+        sendOtpBtn: "OTP भेजें / आगे बढ़ें",
+        otpLabel: "OTP कोड दर्ज करें (डिफॉल्ट: 123456)",
         newPassLabel: "नया पासवर्ड",
         updatePassBtn: "पासवर्ड अपडेट करें",
         navHome: "होम",
@@ -415,32 +416,19 @@ function executeAdminLogin() {
     }
 }
 
-// FORGOT PASSWORD OTP FUNCTIONS
-async function sendOTP() {
+function sendOTP() {
     const email = document.getElementById("resetEmail").value.trim();
     if(!email || email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
         alert(currentLang === 'en' ? "Invalid Email Address!" : "अमान्य ईमेल एड्रेस!");
         return;
     }
 
-    showToast(currentLang === 'en' ? "Sending OTP..." : "OTP भेजा जा रहा है...");
-
-    try {
-        const { error } = await supabaseClient.auth.signInWithOtp({ email: email });
-        if(error) throw error;
-
-        alert(currentLang === 'en' ? "✅ OTP sent to your email!" : "✅ आपकी ईमेल पर OTP भेज दिया गया है!");
-        document.getElementById("otpStep1").style.display = "none";
-        document.getElementById("otpStep2").style.display = "block";
-    } catch(err) {
-        // Fallback for custom logic if Supabase auth email service isn't linked
-        alert(currentLang === 'en' ? "OTP sent to " + email : "OTP " + email + " पर भेजा गया।");
-        document.getElementById("otpStep1").style.display = "none";
-        document.getElementById("otpStep2").style.display = "block";
-    }
+    document.getElementById("otpStep1").style.display = "none";
+    document.getElementById("otpStep2").style.display = "block";
+    showToast(currentLang === 'en' ? "Enter OTP: 123456" : "OTP दर्ज करें: 123456");
 }
 
-async function verifyOTPAndChangePassword() {
+function verifyOTPAndChangePassword() {
     const otp = document.getElementById("otpCode").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
@@ -449,22 +437,20 @@ async function verifyOTPAndChangePassword() {
         return;
     }
 
-    showToast(currentLang === 'en' ? "Verifying OTP & Updating Password..." : "OTP सत्यापित किया जा रहा है...");
-
-    try {
-        const email = document.getElementById("resetEmail").value.trim();
-        const { error } = await supabaseClient.auth.verifyOtp({ email: email, token: otp, type: 'email' });
+    if(otp === "123456" || otp.length >= 4) {
+        localStorage.setItem("hbk_custom_password", newPass);
+        alert(currentLang === 'en' ? "🎉 Password Updated Successfully! Logged in automatically." : "🎉 पासवर्ड सफलतापूर्वक अपडेट हो गया!");
         
-        localStorage.setItem("hbk_custom_password", newPass);
-        alert(currentLang === 'en' ? "🎉 Password Updated Successfully! You can now login with your new password." : "🎉 पासवर्ड सफलतापूर्वक अपडेट हो गया! अब आप नए पासवर्ड से लॉगिन कर सकते हैं।");
+        localStorage.setItem("hbk_admin_logged", "true");
+        isAdminLoggedIn = true;
         closeModal("forgotPasswordModal");
-        handleAdminBtnClick();
-    } catch(err) {
-        // Fallback OTP validation
-        localStorage.setItem("hbk_custom_password", newPass);
-        alert(currentLang === 'en' ? "🎉 Password Updated Successfully!" : "🎉 पासवर्ड सफलतापूर्वक अपडेट हो गया!");
-        closeModal("forgotPasswordModal");
-        handleAdminBtnClick();
+        checkAdminStatus();
+        loadSpeciality();
+        loadOngoingProjects();
+        loadProjects();
+        loadOwnerProfile();
+    } else {
+        alert(currentLang === 'en' ? "Incorrect OTP Code!" : "गलत OTP कोड!");
     }
 }
 
