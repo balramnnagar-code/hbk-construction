@@ -585,8 +585,8 @@ async function loadSpeciality() {
                 <div class="project-desc">${s.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal('${s.id}', '${encodeURIComponent(s.name)}', '${encodeURIComponent(s.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct('${s.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal(${s.id}, '${encodeURIComponent(s.name)}', '${encodeURIComponent(s.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct(${s.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
@@ -646,8 +646,8 @@ async function loadOngoingProjects() {
                 <div class="project-desc">${p.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal('${p.id}', '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal(${p.id}, '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct(${p.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
@@ -707,8 +707,8 @@ async function loadProjects() {
                 <div class="project-desc">${p.quantity || ''}</div>
                 ${isAdminLoggedIn ? `
                     <div style="margin-top:8px;display:flex;gap:6px;">
-                        <button onclick="openEditModal('${p.id}', '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
-                        <button onclick="deleteProduct('${p.id}')" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
+                        <button onclick="openEditModal(${p.id}, '${encodeURIComponent(p.name)}', '${encodeURIComponent(p.quantity || '')}')" style="background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Edit' : 'एडिट'}</button>
+                        <button onclick="deleteProduct(${p.id})" style="background:#dc2626;color:white;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete' : 'डिलीट'}</button>
                     </div>` : ''}
             </div>
         </div>
@@ -759,7 +759,12 @@ async function saveEditedItem() {
 
 async function deleteProduct(id) {
     if(confirm(currentLang === 'en' ? "Delete this item?" : "क्या आप इसे डिलीट करना चाहते हैं?")) {
-        await supabaseClient.from("products").delete().eq("id", id);
+        const { error } = await supabaseClient.from("products").delete().eq("id", id);
+        if(error) {
+            alert("❌ Error: " + error.message);
+            return;
+        }
+        showToast(currentLang === 'en' ? "Deleted successfully!" : "सफलतापूर्वक डिलीट हो गया!");
         loadSpeciality();
         loadOngoingProjects();
         loadProjects();
