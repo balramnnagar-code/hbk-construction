@@ -16,6 +16,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .header-btns{display:flex;gap:6px;align-items:center;}
 .admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
 .lang-btn{background:#f59e0b;color:#0f172a;border:none;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
+.share-btn{background:#22c55e;color:white;border:none;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;cursor:pointer;}
 
 /* HERO BANNER */
 .hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
@@ -78,6 +79,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
         🛣 <span>HBK</span> Construction
     </div>
     <div class="header-btns">
+        <button class="share-btn" onclick="shareWebsite()" id="shareNavBtn">🔗 Share</button>
         <button class="lang-btn" onclick="toggleLanguage()" id="langToggleBtn">🌐 हिंदी</button>
         <button class="admin-login-btn" onclick="handleAdminBtnClick()" id="adminNavBtn">🔐 Admin Login</button>
     </div>
@@ -229,6 +231,7 @@ let currentLang = localStorage.getItem("hbk_lang") || "en";
 
 const translations = {
     en: {
+        shareBtnText: "🔗 Share",
         adminLogin: "🔐 Admin Login",
         logout: "🚪 Logout",
         ownerTitle: "Civil Work Contractor - HBK Construction",
@@ -283,6 +286,7 @@ const translations = {
         navCall: "Call"
     },
     hi: {
+        shareBtnText: "🔗 शेयर",
         adminLogin: "🔐 एडमिन लॉगिन",
         logout: "🚪 लॉगout",
         ownerTitle: "सिविल वर्क कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन",
@@ -338,12 +342,51 @@ const translations = {
     }
 };
 
+async function shareWebsite() {
+    const shareData = {
+        title: 'HBK Construction - Road & Civil Work Contractor',
+        text: 'Er. Balram Nagar (9 Years Experience). Check out HBK Construction services & projects:',
+        url: window.location.href
+    };
+
+    try {
+        // Fetch poster image to share along with link if supported
+        const imageUrl = "https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80";
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "HBK_Construction.jpg", { type: blob.type });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                title: shareData.title,
+                text: shareData.text,
+                url: shareData.url,
+                files: [file]
+            });
+            return;
+        }
+    } catch (e) {
+        // Fallback to normal text/url share if file sharing fails
+    }
+
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (err) {}
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert(currentLang === 'en' ? "Website link copied to clipboard!" : "वेबसाइट लिंक कॉपी हो गई है!");
+    }
+}
+
 function applyLanguage() {
     const t = translations[currentLang];
     document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if(t[key]) el.innerText = t[key];
     });
+
+    document.getElementById("shareNavBtn").innerText = t.shareBtnText;
 
     const langBtn = document.getElementById("langToggleBtn");
     if(currentLang === "en") {
