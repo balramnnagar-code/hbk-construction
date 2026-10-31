@@ -87,7 +87,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <img id="displayOwnerImg" src="https://via.placeholder.com/110?text=Er.Balram+Nagar" class="owner-profile-img" alt="Er. Balram Nagar">
     <h1> Er. Balram Nagar</h1>
     <h3 data-i18n="ownerTitle">Civil Work Contractor - HBK Construction</h3>
-    <p data-i18n="ownerDesc">Earth Work, Complete Bitumen and Concrete Road Work Top to Bottom, Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.</p>
+    <p data-i18n="ownerDesc">Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.</p>
     <button class="cta-btn" onclick="scrollToSection('contactSection')" data-i18n="getQuoteBtn">Get Free Quotation</button>
 </section>
 
@@ -96,11 +96,11 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <div class="section-title" style="color:#1e3a8a;" data-i18n="adminDashboard">⚙️ Owner Dashboard (Er. Balram Nagar)</div>
     
     <div class="form-box" style="margin-bottom:15px;border:2px dashed #f59e0b;">
-        <h3 style="color:#b45309;" data-i18n="addSpecTitle">🌟 Add / Update My Speciality (Main Work)</h3>
-        <div class="form-group"><label data-i18n="specTitleLabel">Speciality Title</label><input type="text" id="newSpecTitle" placeholder="e.g. Expert in Highway & Road Construction"></div>
-        <div class="form-group"><label data-i18n="specDescLabel">Speciality Description</label><textarea id="newSpecDesc" rows="2" placeholder="Write details about your specialty..."></textarea></div>
+        <h3 style="color:#b45309;" data-i18n="addSpecTitle">🌟 Add / Update What We Do (Main Work)</h3>
+        <div class="form-group"><label data-i18n="specTitleLabel">Work Title</label><input type="text" id="newSpecTitle" placeholder="e.g. Expert in Highway & Road Construction"></div>
+        <div class="form-group"><label data-i18n="specDescLabel">Work Description</label><textarea id="newSpecDesc" rows="2" placeholder="Write details about your work..."></textarea></div>
         <div class="form-group"><label data-i18n="specPhotoLabel">Select Photo (Max 5MB)</label><input type="file" id="newSpecImageFile" accept="image/*"></div>
-        <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;" data-i18n="publishSpecBtn">Publish Speciality on Top</button>
+        <button class="submit-btn" onclick="uploadSpecialityWork()" style="background:#f59e0b;color:#0f172a;" data-i18n="publishSpecBtn">Publish Work on Top</button>
     </div>
 
     <div class="form-box" style="margin-bottom:15px;border:2px dashed #0284c7;">
@@ -127,9 +127,9 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 </div>
 
 <div class="section">
-    <div class="section-title" data-i18n="specSectionTitle">🌟 My Speciality & Core Expertise</div>
+    <div class="section-title" data-i18n="specSectionTitle">🌟 What We Do at HBK Construction</div>
     <div class="speciality-container" id="specialityContainer">
-        <p style="text-align:center;color:#64748b;padding:10px;">Loading speciality...</p>
+        <p style="text-align:center;color:#64748b;padding:10px;">Loading details...</p>
     </div>
 </div>
 
@@ -232,14 +232,14 @@ const translations = {
         adminLogin: "🔐 Admin Login",
         logout: "🚪 Logout",
         ownerTitle: "Civil Work Contractor - HBK Construction",
-        ownerDesc:"Earth Work, Complete Bitumen and Concrete Road Work Top to Bottom, Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.",
+        ownerDesc: "Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.",
         getQuoteBtn: "Get Free Quotation",
         adminDashboard: "⚙️ Owner Dashboard (Er. Balram Nagar)",
-        addSpecTitle: "🌟 Add / Update My Speciality (Main Work)",
-        specTitleLabel: "Speciality Title",
-        specDescLabel: "Speciality Description",
+        addSpecTitle: "🌟 Add / Update What We Do (Main Work)",
+        specTitleLabel: "Work Title",
+        specDescLabel: "Work Description",
         specPhotoLabel: "Select Photo (Max 5MB)",
-        publishSpecBtn: "Publish Speciality on Top",
+        publishSpecBtn: "Publish Work on Top",
         addOngoingTitle: "🚧 Add Ongoing Project (Current Work)",
         ongoingTitleLabel: "Project Title",
         ongoingDescLabel: "Project Description / Details",
@@ -253,7 +253,7 @@ const translations = {
         updateProfileTitle: "👤 Update Profile Photo",
         profilePhotoLabel: "Select Profile Photo",
         updateProfileBtn: "Update Profile Photo",
-        specSectionTitle: "🌟 My Speciality & Core Expertise",
+        specSectionTitle: "🌟 What We Do at HBK Construction",
         ongoingSectionTitle: "🚧 Ongoing Projects & Works",
         projSectionTitle: "🏗️ Completed Projects & Works",
         contactSectionTitle: "📞 Direct Contact & Quotation",
@@ -289,11 +289,11 @@ const translations = {
         ownerDesc: "स्लिप फॉर्म पेवर और मैन्युअल के साथ PQC, DLC, स्टैम्पेड कंक्रीट, ड्रेन, यूटिलिटी, पेवर ब्लॉक वर्क और डिपार्टमेंटल लेबर सप्लाई में प्रोफेशनल।",
         getQuoteBtn: "फ्री कोटेशन प्राप्त करें",
         adminDashboard: "⚙️ ओनर डैशबोर्ड (इंजी. बलराम नगर)",
-        addSpecTitle: "🌟 अपनी स्पेशलिटी (मुख्य काम) जोड़ें / अपडेट करें",
-        specTitleLabel: "स्पेशलिटी टाइटल",
-        specDescLabel: "स्पेशलिटी विवरण",
+        addSpecTitle: "🌟 हमारा कार्य जोड़ें / अपडेट करें (मुख्य काम)",
+        specTitleLabel: "कार्य टाइटल",
+        specDescLabel: "कार्य विवरण",
         specPhotoLabel: "फोटो चुनें (अधिकतम 5MB)",
-        publishSpecBtn: "सबसे ऊपर स्पेशलिटी पब्लिश करें",
+        publishSpecBtn: "कार्य सबसे ऊपर पब्लिश करें",
         addOngoingTitle: "🚧 ऑनगोइंग प्रोजेक्ट जोड़ें (वर्तमान कार्य)",
         ongoingTitleLabel: "प्रोजेक्ट टाइटल",
         ongoingDescLabel: "प्रोजेक्ट विवरण / डिटेल्स",
@@ -307,7 +307,7 @@ const translations = {
         updateProfileTitle: "👤 प्रोफाइल फोटो अपडेट करें",
         profilePhotoLabel: "प्रोफाइल फोटो चुनें",
         updateProfileBtn: "प्रोफाइल फोटो अपडेट करें",
-        specSectionTitle: "🌟 मेरी स्पेशलिटी और मुख्य विशेषज्ञता",
+        specSectionTitle: "🌟 HBK कंस्ट्रक्शन क्या-क्या कार्य करती है",
         ongoingSectionTitle: "🚧 चल रहे प्रोजेक्ट्स और कार्य (Ongoing Projects)",
         projSectionTitle: "🏗️ पूर्ण किए गए प्रोजेक्ट्स और कार्य",
         contactSectionTitle: "📞 सीधा संपर्क और कोटेशन",
@@ -505,11 +505,11 @@ async function uploadSpecialityWork() {
     const imageInput = document.getElementById("newSpecImageFile");
 
     if(!title || imageInput.files.length === 0) {
-        alert(currentLang === 'en' ? "Please select both Speciality Title and Photo!" : "कृपया स्पेशलिटी टाइटल और फोटो दोनों चुनें!");
+        alert(currentLang === 'en' ? "Please select both Work Title and Photo!" : "कृपया कार्य टाइटल और फोटो दोनों चुनें!");
         return;
     }
 
-    showToast(currentLang === 'en' ? "Uploading Speciality..." : "स्पेशलिटी अपलोड हो रही है...");
+    showToast(currentLang === 'en' ? "Uploading Work..." : "कार्य अपलोड हो रहा है...");
 
     try {
         const imageUrl = await uploadFileToSupabase(imageInput.files[0], "hbk_spec");
@@ -527,7 +527,7 @@ async function uploadSpecialityWork() {
 
         if(dbError) throw dbError;
 
-        alert(currentLang === 'en' ? "🎉 Speciality successfully published on top!" : "🎉 स्पेशलिटी सफलतापूर्वक सबसे ऊपर पब्लिश हो गई!");
+        alert(currentLang === 'en' ? "🎉 Work successfully published on top!" : "🎉 कार्य सफलतापूर्वक सबसे ऊपर पब्लिश हो गया!");
         document.getElementById("newSpecTitle").value = "";
         document.getElementById("newSpecDesc").value = "";
         imageInput.value = "";
@@ -539,10 +539,10 @@ async function uploadSpecialityWork() {
 
 async function loadSpeciality() {
     const container = document.getElementById("specialityContainer");
-    const { data: specList } = await supabaseClient.from("products").select("*").eq("type", "OwnerSpeciality").limit(1);
+    const { data: specList } = await supabaseClient.from("products").select("*").eq("type", "OwnerSpeciality").order("created_at", { ascending: false }).limit(1);
 
     if(!specList || specList.length === 0) {
-        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:10px;'>${currentLang === 'en' ? 'No speciality added yet.' : 'अभी तक कोई स्पेशलिटी जोड़ी नहीं गई है।'}</p>`;
+        container.innerHTML = `<p style='text-align:center;color:#64748b;padding:10px;'>${currentLang === 'en' ? 'No work added yet.' : 'अभी तक कोई कार्य जोड़ा नहीं गया है।'}</p>`;
         return;
     }
 
@@ -552,7 +552,7 @@ async function loadSpeciality() {
             <img src="${s.image_url}" class="speciality-img" alt="${s.name}">
             <div class="speciality-title">⭐ ${s.name}</div>
             <div class="speciality-desc">${s.quantity || ''}</div>
-            ${isAdminLoggedIn ? `<button onclick="deleteProduct('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Speciality' : 'स्पेशलिटी डिलीट करें'}</button>` : ''}
+            ${isAdminLoggedIn ? `<button onclick="deleteProduct('${s.id}')" style="background:#dc2626;color:white;border:none;padding:5px 10px;border-radius:6px;margin-top:10px;cursor:pointer;font-size:11px;">${currentLang === 'en' ? 'Delete Work' : 'कार्य डिलीट करें'}</button>` : ''}
         </div>
     `;
 }
