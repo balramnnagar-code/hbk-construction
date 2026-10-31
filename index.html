@@ -17,6 +17,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .admin-login-btn{background:rgba(255,255,255,0.2);color:white;border:none;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;}
 .lang-btn{background:#f59e0b;color:#0f172a;border:none;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;}
 .share-btn{background:#22c55e;color:white;border:none;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;}
+.refresh-btn{background:#0284c7;color:white;border:none;padding:4px 8px;border-radius:15px;font-size:10px;font-weight:bold;cursor:pointer;}
 
 /* HERO BANNER */
 .hero{background:linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=1000&q=80');background-size:cover;background-position:center;color:white;padding:30px 15px;text-align:center;}
@@ -72,6 +73,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
         🛣 <span>HBK</span> Construction
     </div>
     <div class="header-btns">
+        <button class="refresh-btn" onclick="refreshAllData()">🔄 Refresh</button>
         <button class="share-btn" onclick="shareWebsite()" id="shareNavBtn">🔗 Share</button>
         <button class="lang-btn" onclick="toggleLanguage()" id="langToggleBtn">🌐 हिंदी</button>
         <button class="admin-login-btn" onclick="handleAdminBtnClick()" id="adminNavBtn">🔐 Admin</button>
@@ -221,7 +223,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <a href="tel:+916260832599" class="nav-item"><span class="nav-icon">📞</span><span data-i18n="navCall">Call</span></a>
 </div>
 
-<div id="toast">Inquiry Submitted Successfully!</div>
+<div id="toast">Refreshed Successfully!</div>
 
 <script>
 const SUPABASE_URL = "https://zqirmlnbqftzurjzbluv.supabase.co";
@@ -369,6 +371,14 @@ async function shareWebsite() {
     alert(currentLang === 'en' ? "Website link copied to clipboard!" : "वेबसाइट लिंक कॉपी हो गई है!");
 }
 
+function refreshAllData() {
+    showToast(currentLang === 'en' ? "Refreshing all data..." : "डेटा रीफ्रेश हो रहा है...");
+    loadSpeciality();
+    loadOngoingProjects();
+    loadProjects();
+    loadOwnerProfile();
+}
+
 function applyLanguage() {
     const t = translations[currentLang];
     document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -411,10 +421,7 @@ function handleAdminBtnClick() {
         isAdminLoggedIn = false;
         checkAdminStatus();
         showToast(currentLang === 'en' ? "Logged out successfully." : "सफलतापूर्वक लॉग आउट हो गया।");
-        loadSpeciality();
-        loadOngoingProjects();
-        loadProjects();
-        loadOwnerProfile();
+        refreshAllData();
     } else {
         document.getElementById("adminLoginModal").style.display = "block";
     }
@@ -440,10 +447,7 @@ function executeAdminLogin() {
         closeModal("adminLoginModal");
         checkAdminStatus();
         showToast(currentLang === 'en' ? "Welcome Balram Nagar ji!" : "स्वागत है बलराम नगर जी!");
-        loadSpeciality();
-        loadOngoingProjects();
-        loadProjects();
-        loadOwnerProfile();
+        refreshAllData();
     } else {
         alert(currentLang === 'en' ? "Incorrect Email or Password!" : "गलत ईमेल या पासवर्ड!");
     }
@@ -478,10 +482,7 @@ function verifyOTPAndChangePassword() {
         isAdminLoggedIn = true;
         closeModal("forgotPasswordModal");
         checkAdminStatus();
-        loadSpeciality();
-        loadOngoingProjects();
-        loadProjects();
-        loadOwnerProfile();
+        refreshAllData();
     } else {
         alert(currentLang === 'en' ? "Incorrect OTP Code!" : "गलत OTP कोड!");
     }
@@ -749,9 +750,7 @@ async function saveEditedItem() {
 
         alert(currentLang === 'en' ? "✅ Updated successfully!" : "✅ सफलतापूर्वक अपडेट हो गया!");
         closeModal("editModal");
-        loadSpeciality();
-        loadOngoingProjects();
-        loadProjects();
+        refreshAllData();
     } catch(err) {
         alert("❌ Error: " + err.message);
     }
@@ -759,15 +758,13 @@ async function saveEditedItem() {
 
 async function deleteProduct(id) {
     if(confirm(currentLang === 'en' ? "Delete this item?" : "क्या आप इसे डिलीट करना चाहते हैं?")) {
-        const { error } = await supabaseClient.from("products").delete().eq("id", id);
-        if(error) {
-            alert("❌ Error: " + error.message);
+        const { data, error } = await supabaseClient.from("products").delete().eq("id", id).select();
+        if(error || !data || data.length === 0) {
+            alert("❌ Delete Error / RLS Policy block: " + (error ? error.message : "Item not found or restricted"));
             return;
         }
         showToast(currentLang === 'en' ? "Deleted successfully!" : "सफलतापूर्वक डिलीट हो गया!");
-        loadSpeciality();
-        loadOngoingProjects();
-        loadProjects();
+        refreshAllData();
     }
 }
 
@@ -805,9 +802,7 @@ function showToast(msg) {
 
 applyLanguage();
 loadOwnerProfile();
-loadSpeciality();
-loadOngoingProjects();
-loadProjects();
+refreshAllData();
 </script>
 </body>
 </html>
