@@ -418,7 +418,6 @@ function executeAdminLogin() {
     const email = document.getElementById("adminEmail").value.trim();
     const pass = document.getElementById("adminPassword").value.trim();
 
-    // Check custom saved password or default master password
     const savedCustomPass = localStorage.getItem("hbk_admin_pass") || "balram@123";
 
     if (email === ADMIN_EMAIL && pass === savedCustomPass) {
@@ -508,7 +507,7 @@ async function uploadOwnerProfilePhoto() {
     }
 }
 
-// Local Storage Helpers with Fallback Defaults
+// Local Storage Helpers
 function getLocalData(key) {
     try {
         const data = localStorage.getItem(key);
@@ -522,26 +521,6 @@ function saveLocalData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-function loadInitialData() {
-    if(getLocalData("hbk_speciality").length === 0) {
-        saveLocalData("hbk_speciality", [
-            { id: 1, title: "Road Construction & PQC", desc: "Expert in Slip Form Paver and Manual PQC, DLC, Bitumen & Concrete Roads.", image: "https://images.unsplash.com/photo-1584467735811-c96a791a9235?auto=format&fit=crop&w=600&q=80" }
-        ]);
-    }
-    if(getLocalData("hbk_ongoing").length === 0) {
-        saveLocalData("hbk_ongoing", [
-            { id: 1, title: "Highway Road & Drainage Work", desc: "Ongoing high-standard drainage and road grading project under civil contract.", image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80" }
-        ]);
-    }
-    if(getLocalData("hbk_projects").length === 0) {
-        saveLocalData("hbk_projects", [
-            { id: 1, title: "Complete Bitumen Road Project", desc: "Top-to-bottom bitumen road layer execution completed successfully.", image: "https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=600&q=80" }
-        ]);
-    }
-}
-
-loadInitialData();
-
 async function uploadSpecialityWork() {
     const title = document.getElementById("newSpecTitle").value.trim();
     const desc = document.getElementById("newSpecDesc").value.trim();
@@ -552,7 +531,7 @@ async function uploadSpecialityWork() {
         return;
     }
 
-    let imageUrl = "https://images.unsplash.com/photo-1541888946425-d0fbb1878d6b?auto=format&fit=crop&w=600&q=80";
+    let imageUrl = "https://via.placeholder.com/600x400?text=HBK+Construction";
     if(fileInput.files.length > 0) {
         try {
             imageUrl = await convertFileToBase64(fileInput.files[0]);
@@ -583,7 +562,7 @@ async function uploadOngoingWork() {
         return;
     }
 
-    let imageUrl = "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80";
+    let imageUrl = "https://via.placeholder.com/600x400?text=HBK+Ongoing";
     if(fileInput.files.length > 0) {
         try {
             imageUrl = await convertFileToBase64(fileInput.files[0]);
@@ -614,7 +593,7 @@ async function uploadProjectWork() {
         return;
     }
 
-    let imageUrl = "https://images.unsplash.com/photo-1584467735811-c96a791a9235?auto=format&fit=crop&w=600&q=80";
+    let imageUrl = "https://via.placeholder.com/600x400?text=HBK+Project";
     if(fileInput.files.length > 0) {
         try {
             imageUrl = await convertFileToBase64(fileInput.files[0]);
@@ -777,16 +756,17 @@ async function saveEditedItem() {
 
 function submitInquiry() {
     const name = document.getElementById("clientName").value.trim();
-    const mobile = document.getElementById("clientMobile").value.trim();
+    const mobile = document.getElementById("clientMobile.value" in window ? clientMobile.value : "").trim();
+    const clientMobileInput = document.getElementById("clientMobile").value.trim();
     const type = document.getElementById("projectType").value;
     const details = document.getElementById("projectDetails").value.trim();
 
-    if(!name || !mobile) {
+    if(!name || !clientMobileInput) {
         alert("Please enter your name and mobile number.");
         return;
     }
 
-    const message = `*New Inquiry for HBK Construction*%0A👤 Name: ${name}%0A📞 Mobile: ${mobile}%0A🏗️ Type: ${type}%0A📝 Details: ${details}`;
+    const message = `*New Inquiry for HBK Construction*%0A👤 Name: ${name}%0A📞 Mobile: ${clientMobileInput}%0A🏗️ Type: ${type}%0A📝 Details: ${details}`;
     const whatsappUrl = `https://wa.me/916260832599?text=${message}`;
     window.open(whatsappUrl, '_blank');
 }
