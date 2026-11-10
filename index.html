@@ -48,6 +48,10 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 .form-group{margin-bottom:12px;}
 .form-group label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#334155;}
 .form-group input, .form-group textarea, .form-group select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:13px;outline:none;}
+.password-wrapper{position:relative;display:flex;align-items:center;}
+.password-wrapper input{width:100%;padding-right:40px;}
+.toggle-pass{position:absolute;right:10px;cursor:pointer;font-size:16px;user-select:none;}
+
 .submit-btn{background:#1e3a8a;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:6px;}
 .whatsapp-btn{background:#22c55e;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:8px;text-align:center;display:block;text-decoration:none;}
 .email-btn{background:#0284c7;color:white;border:none;padding:12px;width:100%;border-radius:10px;font-weight:bold;cursor:pointer;font-size:14px;margin-top:8px;text-align:center;display:block;text-decoration:none;}
@@ -83,14 +87,14 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 <section class="hero">
     <img id="displayOwnerImg" src="https://via.placeholder.com/110?text=Er.Balram+Nagar" class="owner-profile-img" alt="Er. Balram Nagar">
     <h1>Er. Balram Nagar</h1>
-    <h3 data-i18n="ownerTitle">Civil Work Contractor - HBK Construction</h3>
+    <h3 data-i18n="ownerTitle">Civil Work Contractor - HBK Construction (Prop.)</h3>
     <p data-i18n="ownerDesc">Earth Work, Complete Bitumen and Concrete Road Work Top to Bottom, Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.</p>
     <button class="cta-btn" onclick="scrollToSection('contactSection')" data-i18n="getQuoteBtn">Get Free Quotation</button>
 </section>
 
 <!-- ADMIN DASHBOARD PANEL -->
 <div class="section" id="adminPanelSection" style="display:none;background:#eff6ff;border:2px solid #1e3a8a;margin:15px;border-radius:16px;">
-    <div class="section-title" style="color:#1e3a8a;" data-i18n="adminDashboard">⚙️ Owner Dashboard (Er. Balram Nagar)</div>
+    <div class="section-title" style="color:#1e3a8a;" data-i18n="adminDashboard">⚙️ Prop. Dashboard (Er. Balram Nagar)</div>
     
     <div class="form-box" style="margin-bottom:15px;border:2px dashed #f59e0b;">
         <h3 style="color:#b45309;" data-i18n="addSpecTitle">🌟 Add What We Do (Main Work)</h3>
@@ -148,7 +152,7 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
     <div class="section-title" data-i18n="contactSectionTitle">📞 Direct Contact & Quotation</div>
     
     <div class="contact-info-card">
-        👤 <b data-i18n="ownerLabel">Owner</b>: Er. Balram Nagar<br>
+        👤 <b data-i18n="ownerLabel">Prop.</b>: Er. Balram Nagar<br>
         📞 <b data-i18n="mobileLabel">Mobile</b>: +91 6260832599<br>
         📧 <b data-i18n="emailLabel">Email</b>: balramnnagar0077@gmail.com<br>
         📍 <b data-i18n="workAreaLabel">Work Area</b>: Road & Civil Work Contractor
@@ -189,10 +193,17 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 <div class="modal" id="adminLoginModal">
   <div class="modal-box">
     <span class="close" onclick="closeModal('adminLoginModal')">×</span>
-    <h2 style="color:#1e3a8a;margin-bottom:12px;" data-i18n="modalTitle">🔐 Owner Login (Balram Nagar)</h2>
+    <h2 style="color:#1e3a8a;margin-bottom:12px;" data-i18n="modalTitle">🔐 Prop. Login (Balram Nagar)</h2>
+    <div id="loginBlockMsg" style="color:red;font-size:12px;margin-bottom:8px;font-weight:bold;display:none;"></div>
     <div class="form-group"><label data-i18n="emailLabelModal">Email Address</label><input type="email" id="adminEmail" value="balramnnagar0077@gmail.com"></div>
-    <div class="form-group"><label data-i18n="passLabelModal">Password</label><input type="password" id="adminPassword" placeholder="Enter password"></div>
-    <button class="submit-btn" onclick="executeAdminLogin()" data-i18n="loginBtnModal">Login</button>
+    <div class="form-group">
+        <label data-i18n="passLabelModal">Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="adminPassword" placeholder="Enter password">
+            <span class="toggle-pass" onclick="togglePasswordVisibility('adminPassword', this)">👁️</span>
+        </div>
+    </div>
+    <button class="submit-btn" id="loginSubmitBtn" onclick="executeAdminLogin()" data-i18n="loginBtnModal">Login</button>
     <span class="link-btn" onclick="openForgotPasswordModal()" data-i18n="forgotPasswordLink">Forgot Password?</span>
   </div>
 </div>
@@ -201,18 +212,30 @@ body{background:#f8fafc;color:#0f172a;padding-bottom:70px;}
 <div class="modal" id="forgotPasswordModal">
   <div class="modal-box">
     <span class="close" onclick="closeModal('forgotPasswordModal')">×</span>
-    <h2 style="color:#1e3a8a;margin-bottom:12px;" data-i18n="resetPasswordTitle">🔑 Reset Password via OTP</h2>
+    <h2 style="color:#1e3a8a;margin-bottom:12px;" data-i18n="resetPasswordTitle">🔑 Reset Password</h2>
     
+    <div id="resetBlockMsg" style="color:red;font-size:12px;margin-bottom:8px;font-weight:bold;display:none;"></div>
     <div id="otpStep1">
         <div class="form-group"><label data-i18n="emailLabelModal">Email Address</label><input type="email" id="resetEmail" value="balramnnagar0077@gmail.com"></div>
-        <button class="submit-btn" onclick="sendOTP()" data-i18n="sendOtpBtn">Send OTP / Continue</button>
+        <div class="form-group">
+            <label>Master Verification Key (Balram@70245872)</label>
+            <div class="password-wrapper">
+                <input type="password" id="masterKeyInput" placeholder="Enter Balram@70245872">
+                <span class="toggle-pass" onclick="togglePasswordVisibility('masterKeyInput', this)">👁️</span>
+            </div>
+        </div>
+        <button class="submit-btn" id="verifyMasterBtn" onclick="verifyMasterKey()" data-i18n="sendOtpBtn">Verify & Continue</button>
     </div>
 
     <div id="otpStep2" style="display:none;">
-        <p style="font-size:11px;color:#64748b;margin-bottom:8px;">Default Master OTP Code is <b>123456</b></p>
-        <div class="form-group"><label data-i18n="otpLabel">Enter OTP Code</label><input type="text" id="otpCode" placeholder="Enter 123456"></div>
-        <div class="form-group"><label data-i18n="newPassLabel">New Password</label><input type="password" id="newPassword" placeholder="Enter new password"></div>
-        <button class="submit-btn" onclick="verifyOTPAndChangePassword()" style="background:#16a34a;" data-i18n="updatePassBtn">Update Password</button>
+        <div class="form-group">
+            <label data-i18n="newPassLabel">New Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="newPassword" placeholder="Enter new password">
+                <span class="toggle-pass" onclick="togglePasswordVisibility('newPassword', this)">👁️</span>
+            </div>
+        </div>
+        <button class="submit-btn" onclick="updatePassword()" style="background:#16a34a;" data-i18n="updatePassBtn">Update Password</button>
     </div>
   </div>
 </div>
@@ -230,15 +253,38 @@ const ADMIN_EMAIL = "balramnnagar0077@gmail.com";
 let isAdminLoggedIn = localStorage.getItem("hbk_admin_logged") === "true";
 let currentLang = localStorage.getItem("hbk_lang") || "en";
 
+// Brute Force protection helpers
+function getFailedAttempts() {
+    const data = JSON.parse(localStorage.getItem("hbk_failed_attempts") || '{"count":0, "blockedUntil":0}');
+    if (data.blockedUntil && Date.now() > data.blockedUntil) {
+        localStorage.setItem("hbk_failed_attempts", JSON.stringify({count:0, blockedUntil:0}));
+        return {count:0, blockedUntil:0};
+    }
+    return data;
+}
+
+function recordFailedAttempt() {
+    let data = getFailedAttempts();
+    data.count += 1;
+    if (data.count >= 5) {
+        data.blockedUntil = Date.now() + (24 * 60 * 60 * 1000); // 24 hours lock
+    }
+    localStorage.setItem("hbk_failed_attempts", JSON.stringify(data));
+}
+
+function resetFailedAttempts() {
+    localStorage.setItem("hbk_failed_attempts", JSON.stringify({count:0, blockedUntil:0}));
+}
+
 const translations = {
     en: {
         shareBtnText: "🔗 Share",
         adminLogin: "🔐 Admin",
         logout: "🚪 Logout",
-        ownerTitle: "Civil Work Contractor - HBK Construction",
+        ownerTitle: "Civil Work Contractor - HBK Construction (Prop.)",
         ownerDesc: "Earth Work, Complete Bitumen and Concrete Road Work Top to Bottom, Professional in PQC With Slip Form Paver and Manual, DLC, Stamped Concrete, Drain, Utility, Paver Block Work & Department Labour Supply.",
         getQuoteBtn: "Get Free Quotation",
-        adminDashboard: "⚙️ Owner Dashboard (Er. Balram Nagar)",
+        adminDashboard: "⚙️ Prop. Dashboard (Er. Balram Nagar)",
         addSpecTitle: "🌟 Add What We Do (Main Work)",
         specTitleLabel: "Work Title",
         specDescLabel: "Work Description",
@@ -261,7 +307,7 @@ const translations = {
         ongoingSectionTitle: "🚧 Ongoing Projects & Works",
         projSectionTitle: "🏗️ Completed Projects & Works",
         contactSectionTitle: "📞 Direct Contact & Quotation",
-        ownerLabel: "Owner",
+        ownerLabel: "Prop.",
         mobileLabel: "Mobile",
         emailLabel: "Email",
         workAreaLabel: "Work Area",
@@ -272,14 +318,13 @@ const translations = {
         submitInquiryBtn: "Submit Inquiry",
         whatsappBtn: "💬 Direct WhatsApp Chat (+91 6260832599)",
         emailBtn: "📧 Send Direct Email",
-        modalTitle: "🔐 Owner Login (Balram Nagar)",
+        modalTitle: "🔐 Prop. Login (Balram Nagar)",
         emailLabelModal: "Email Address",
         passLabelModal: "Password",
         loginBtnModal: "Login",
         forgotPasswordLink: "Forgot Password?",
-        resetPasswordTitle: "🔑 Reset Password via OTP",
-        sendOtpBtn: "Send OTP / Continue",
-        otpLabel: "Enter OTP Code (Default: 123456)",
+        resetPasswordTitle: "🔑 Reset Password",
+        sendOtpBtn: "Verify & Continue",
         newPassLabel: "New Password",
         updatePassBtn: "Update Password",
         navHome: "Home",
@@ -290,10 +335,10 @@ const translations = {
         shareBtnText: "🔗 शेयर",
         adminLogin: "🔐 एडमिन",
         logout: "🚪 लॉगआउट",
-        ownerTitle: "सिविल वर्क कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन",
+        ownerTitle: "सिविल वर्क कॉन्ट्रैक्टर - HBK कंस्ट्रक्शन (Prop.)",
         ownerDesc: "अर्थ वर्क, कम्पलीट बिटुमेन और कंक्रीट रोड वर्क, स्लिप फॉर्म पेवर और मैन्युअल के साथ PQC, DLC, स्टैम्पेड कंक्रीट, ड्रेन, यूटिलिटी, पेवर ब्लॉक वर्क और डिपार्टमेंटल लेबर सप्लाई।",
         getQuoteBtn: "फ्री कोटेशन प्राप्त करें",
-        adminDashboard: "⚙️ ओनर डैशबोर्ड (इंजी. बलराम नगर)",
+        adminDashboard: "⚙️ प्रोपराइटर डैशबोर्ड (इंजी. बलराम नगर)",
         addSpecTitle: "🌟 हमारा कार्य जोड़ें (मुख्य काम)",
         specTitleLabel: "कार्य टाइटल",
         specDescLabel: "कार्य विवरण",
@@ -316,7 +361,7 @@ const translations = {
         ongoingSectionTitle: "🚧 चालू प्रोजेक्ट्स और कार्य",
         projSectionTitle: "🏗️ पूर्ण प्रोजेक्ट्स और कार्य",
         contactSectionTitle: "📞 सीधा संपर्क और कोटेशन",
-        ownerLabel: "मालिक",
+        ownerLabel: "प्रोप.",
         mobileLabel: "मोबाइल",
         emailLabel: "ईमेल",
         workAreaLabel: "कार्य क्षेत्र",
@@ -327,14 +372,13 @@ const translations = {
         submitInquiryBtn: "पूछताछ भेजें",
         whatsappBtn: "💬 डायरेक्ट व्हाट्सएप चैट (+91 6260832599)",
         emailBtn: "📧 डायरेक्ट ईमेल भेजें",
-        modalTitle: "🔐 ओनर लॉगिन (बलराम नगर)",
+        modalTitle: "🔐 प्रोपराइटर लॉगिन (बलराम नगर)",
         emailLabelModal: "ईमेल एड्रेस",
         passLabelModal: "पासवर्ड",
         loginBtnModal: "लॉगिन",
         forgotPasswordLink: "पासवर्ड भूल गए?",
-        resetPasswordTitle: "🔑 OTP द्वारा पासवर्ड रीसेट करें",
-        sendOtpBtn: "OTP भेजें / आगे बढ़ें",
-        otpLabel: "OTP कोड दर्ज करें (डिफ़ॉल्ट: 123456)",
+        resetPasswordTitle: "🔑 पासवर्ड रीसेट करें",
+        sendOtpBtn: "सत्यापित करें और आगे बढ़ें",
         newPassLabel: "नया पासवर्ड",
         updatePassBtn: "पासवर्ड अपडेट करें",
         navHome: "होम",
@@ -349,16 +393,26 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAllData();
     setupDirectLinks();
     
-    // Load Saved Profile Photo on startup
     const savedImg = localStorage.getItem("hbk_owner_img");
     if(savedImg) {
         document.getElementById("displayOwnerImg").src = savedImg;
     }
 });
 
+function togglePasswordVisibility(inputId, iconEl) {
+    const input = document.getElementById(inputId);
+    if(input.type === "password") {
+        input.type = "text";
+        iconEl.innerText = "🙈";
+    } else {
+        input.type = "password";
+        iconEl.innerText = "👁️";
+    }
+}
+
 function setupDirectLinks() {
     const phoneNumber = "916260832599";
-    const waText = encodeURIComponent("Hello Er. Balram Nagar, I want to discuss a road / civil construction project quotation.");
+    const waText = encodeURIComponent("Hello Er. Balram Nagar (Prop.), I want to discuss a road / civil construction project quotation.");
     document.getElementById("whatsappDirectBtn").href = `https://wa.me/${phoneNumber}?text=${waText}`;
 
     const emailSubject = encodeURIComponent("Inquiry for Road & Civil Construction Project - HBK Construction");
@@ -388,14 +442,33 @@ function applyLanguage() {
 
 function handleAdminBtnClick() {
     if (isAdminLoggedIn) {
-        if (confirm("Do you want to logout from Admin Dashboard?")) {
+        if (confirm("Do you want to logout from Prop. Dashboard?")) {
             isAdminLoggedIn = false;
             localStorage.setItem("hbk_admin_logged", "false");
             updateAdminUI();
             showToast("Logged out successfully!");
         }
     } else {
+        checkLockoutStatus('login');
         openModal('adminLoginModal');
+    }
+}
+
+function checkLockoutStatus(type) {
+    const data = getFailedAttempts();
+    const msgEl = document.getElementById(type === 'login' ? 'loginBlockMsg' : 'resetBlockMsg');
+    const btnEl = document.getElementById(type === 'login' ? 'loginSubmitBtn' : 'verifyMasterBtn');
+
+    if (data.blockedUntil && Date.now() < data.blockedUntil) {
+        const remainingHours = Math.ceil((data.blockedUntil - Date.now()) / (1000 * 60 * 60));
+        msgEl.style.display = "block";
+        msgEl.innerText = `Too many failed attempts! Access blocked for ${remainingHours} hours.`;
+        if(btnEl) btnEl.disabled = true;
+        return true;
+    } else {
+        msgEl.style.display = "none";
+        if(btnEl) btnEl.disabled = false;
+        return false;
     }
 }
 
@@ -415,51 +488,68 @@ function updateAdminUI() {
 }
 
 function executeAdminLogin() {
+    if (checkLockoutStatus('login')) return;
+
     const email = document.getElementById("adminEmail").value.trim();
     const pass = document.getElementById("adminPassword").value.trim();
-
     const savedCustomPass = localStorage.getItem("hbk_admin_pass") || "balram@123";
 
     if (email === ADMIN_EMAIL && pass === savedCustomPass) {
+        resetFailedAttempts();
         isAdminLoggedIn = true;
         localStorage.setItem("hbk_admin_logged", "true");
         closeModal('adminLoginModal');
         updateAdminUI();
         showToast("Welcome back, Er. Balram Nagar!");
     } else {
-        alert("Invalid email or password! Please check your credentials.");
+        recordFailedAttempt();
+        const data = getFailedAttempts();
+        const left = 5 - data.count;
+        alert(`Invalid credentials! ${left > 0 ? left + ' attempts remaining before 24hr block.' : 'Account blocked for 24 hours.'}`);
+        checkLockoutStatus('login');
     }
 }
 
 function openForgotPasswordModal() {
     closeModal('adminLoginModal');
+    checkLockoutStatus('reset');
     openModal('forgotPasswordModal');
 }
 
-function sendOTP() {
+function verifyMasterKey() {
+    if (checkLockoutStatus('reset')) return;
+
     const email = document.getElementById("resetEmail").value.trim();
-    if(email !== ADMIN_EMAIL) {
-        alert("Registered owner email not found!");
-        return;
+    const masterKey = document.getElementById("masterKeyInput").value.trim();
+
+    if(email === ADMIN_EMAIL && masterKey === "Balram@70245872") {
+        resetFailedAttempts();
+        document.getElementById("otpStep1").style.display = "none";
+        document.getElementById("otpStep2").style.display = "block";
+        showToast("Verified Successfully! Enter new password.");
+    } else {
+        recordFailedAttempt();
+        const data = getFailedAttempts();
+        const left = 5 - data.count;
+        alert(`Incorrect Email or Master Key! ${left > 0 ? left + ' attempts remaining.' : 'Blocked for 24 hours.'}`);
+        checkLockoutStatus('reset');
     }
-    document.getElementById("otpStep1").style.display = "none";
-    document.getElementById("otpStep2").style.display = "block";
-    showToast("Master OTP sent (Use 123456)");
 }
 
-function verifyOTPAndChangePassword() {
-    const otp = document.getElementById("otpCode").value.trim();
+function updatePassword() {
     const newPass = document.getElementById("newPassword").value.trim();
 
-    if(otp === "123456" && newPass.length >= 4) {
+    if(newPass.length >= 4) {
         localStorage.setItem("hbk_admin_pass", newPass);
-        alert("Password updated successfully! You can now login with your new password.");
+        alert("Password updated successfully! You can now login.");
         closeModal('forgotPasswordModal');
         document.getElementById("otpStep1").style.display = "block";
         document.getElementById("otpStep2").style.display = "none";
+        document.getElementById("masterKeyInput").value = "";
+        document.getElementById("newPassword").value = "";
         openModal('adminLoginModal');
     } else {
-        alert("Invalid OTP code or password too short (min 4 characters).");
+        alert("Password too short (minimum 4 characters required).");
     }
 }
 
@@ -507,7 +597,6 @@ async function uploadOwnerProfilePhoto() {
     }
 }
 
-// Local Storage Helpers
 function getLocalData(key) {
     try {
         const data = localStorage.getItem(key);
@@ -756,7 +845,6 @@ async function saveEditedItem() {
 
 function submitInquiry() {
     const name = document.getElementById("clientName").value.trim();
-    const mobile = document.getElementById("clientMobile.value" in window ? clientMobile.value : "").trim();
     const clientMobileInput = document.getElementById("clientMobile").value.trim();
     const type = document.getElementById("projectType").value;
     const details = document.getElementById("projectDetails").value.trim();
